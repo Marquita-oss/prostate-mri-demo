@@ -3,16 +3,16 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>PROSIS — Análisis de resonancia de próstata con IA</title>
-<meta name="description" content="PROSIS segmenta la próstata, marca focos sospechosos y entrega métricas reproducibles desde estudios DICOM. Prototipo de investigación de la Universidad de Valparaíso. Pruébalo en el demo.">
+<title>MedVisual — Análisis de resonancia de próstata con IA</title>
+<meta name="description" content="MedVisual segmenta la próstata, marca focos sospechosos y entrega métricas reproducibles desde estudios DICOM. Prototipo funcional en desarrollo, Universidad de Valparaíso. Pruébalo en el demo.">
 <meta name="theme-color" content="#000000">
 <meta name="robots" content="noindex, nofollow">
 <meta property="og:type" content="website">
-<meta property="og:title" content="PROSIS — Resonancia de próstata, analizada con claridad">
+<meta property="og:title" content="MedVisual — Resonancia de próstata, analizada con claridad">
 <meta property="og:description" content="Demo interactivo con resultados reales: glándula, zonas y focos sospechosos sobre resonancia biparamétrica. Universidad de Valparaíso.">
 <meta property="og:image" content="https://marquita-oss.github.io/prostate-mri-demo/assets/og.png">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="icon" type="image/png" href="assets/favicon.png">
 <style>
 @font-face{font-family:"Fraunces";src:url(assets/fonts/fraunces-latin-500-normal.woff2) format("woff2");font-weight:500;font-style:normal;font-display:swap}
 @font-face{font-family:"Fraunces";src:url(assets/fonts/fraunces-latin-700-normal.woff2) format("woff2");font-weight:700;font-style:normal;font-display:swap}
@@ -255,7 +255,7 @@ a{color:var(--blue-soft)}
   -webkit-backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid rgba(255,255,255,.08)}
 .nav2 .wrap{display:flex;align-items:center;gap:26px;height:52px}
 .nav2 .mark{display:flex;align-items:center;gap:9px;font-weight:600;letter-spacing:.01em;color:#fff;text-decoration:none;font-size:16px}
-.nav2 .mark svg{width:19px;height:19px;color:#fff}
+.nav2 .mark img{width:26px;height:26px;display:block}
 .nav2 nav{margin-left:auto;display:flex;gap:26px;align-items:center}
 .nav2 nav a{color:var(--txt2);text-decoration:none;font-size:14px;transition:color .2s}
 .nav2 nav a:hover{color:#fff}
@@ -280,7 +280,7 @@ a{color:var(--blue-soft)}
 .btn2.plain{color:var(--blue-soft);padding-left:10px}
 .hero2 .row{display:flex;gap:10px;justify-content:center;align-items:center;margin-top:30px;flex-wrap:wrap}
 .hero3d{position:relative;z-index:1;margin:34px auto 0;width:min(440px,78vw)}
-.hero3d img{width:100%;display:block;filter:drop-shadow(0 30px 70px rgba(74,144,226,.22))}
+.hero3d img{width:100%;display:block;-webkit-mask-image:radial-gradient(closest-side,#000 62%,transparent 100%);mask-image:radial-gradient(closest-side,#000 62%,transparent 100%);filter:drop-shadow(0 30px 70px rgba(74,144,226,.22))}
 .hero3d figcaption{color:var(--mut2);font-size:12.5px;margin-top:6px}
 
 /* ---- capítulos ---- */
@@ -296,15 +296,16 @@ a{color:var(--blue-soft)}
 .chap .note2{color:var(--mut2);font-size:13.5px;margin-top:18px;max-width:46ch;line-height:1.5}
 @media(max-width:900px){.chap .grid{grid-template-columns:1fr;gap:34px}.chap.flip .grid{direction:ltr}}
 
-/* marco de equipo */
-.dev{position:relative;border-radius:16px;padding:9px 9px 0;background:linear-gradient(#3a3a3f,#232327);
-  box-shadow:0 30px 70px rgba(0,0,0,.65),0 0 0 1px rgba(255,255,255,.07)}
-.dev .screen{border-radius:9px;overflow:hidden;background:#000;position:relative}
+/* ventana de captura (plana, de frente, legible) */
+.dev{position:relative;border-radius:12px;background:#000;box-shadow:0 24px 60px rgba(0,0,0,.55),0 0 0 1px rgba(255,255,255,.12);overflow:hidden}
+.dev a{display:block;cursor:zoom-in}
 .dev .screen img{display:block;width:100%;height:auto}
-.dev .cam{position:absolute;top:4px;left:50%;width:5px;height:5px;border-radius:50%;background:#15151a;transform:translateX(-50%)}
-.dev .base{height:11px;margin:0 -22px;border-radius:0 0 12px 12px;background:linear-gradient(#2a2a2e,#1a1a1d);
-  box-shadow:0 10px 24px rgba(0,0,0,.6)}
-.dev .base::after{content:"";display:block;width:84px;height:4px;margin:0 auto;border-radius:0 0 6px 6px;background:#101013}
+.dev .bar{height:26px;background:#1c1c20;display:flex;align-items:center;gap:6px;padding:0 12px;border-bottom:1px solid rgba(255,255,255,.08)}
+.dev .bar i{width:9px;height:9px;border-radius:50%;background:#3a3a40;display:block}
+.dev .bar span{margin-left:8px;font-size:11.5px;color:#8a8a92;letter-spacing:.02em}
+.cite{font-size:.72em;line-height:0}.cite a{color:var(--blue);text-decoration:none}.cite a:hover{text-decoration:underline}
+.refs-list{padding-left:18px}.refs-list li{margin:0 0 8px;overflow-wrap:anywhere}.refs-list a{color:inherit}
+@media(min-width:901px){.chap .grid{grid-template-columns:minmax(0,.8fr) minmax(0,1.45fr)}}
 
 /* leyenda de capas */
 .chips{list-style:none;margin:26px 0 0;padding:0;display:flex;flex-direction:column;gap:9px;max-width:330px}
@@ -327,12 +328,12 @@ a{color:var(--blue-soft)}
 .limits li::before{content:"";position:absolute;left:0;top:9px;width:6px;height:6px;border-radius:50%;background:var(--blue)}
 
 /* ---- hoja de ruta ---- */
-.road{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:40px}
+.road{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:40px}
 .road div{border:1px solid var(--line2);border-radius:16px;padding:22px;background:var(--surf2)}
 .road h4{margin:0 0 8px;font-size:15px;color:#fff}
 .road p{margin:0;color:var(--txt2);font-size:14px;line-height:1.55}
 .road .when{color:var(--blue);font-size:12.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px}
-@media(max-width:900px){.road{grid-template-columns:1fr 1fr}}
+@media(max-width:900px){.road{grid-template-columns:1fr}}
 @media(max-width:560px){.road{grid-template-columns:1fr}}
 
 /* ---- entrada al hacer scroll ---- */
@@ -359,7 +360,7 @@ footer{background:#000;border-top:1px solid rgba(255,255,255,.08)}
 <body>
 <header class="nav2">
   <div class="wrap">
-    <a class="mark" href="#top"><svg viewBox="0 0 64 64" fill="none" aria-hidden="true" ><path d="M60.0 32.0 L60.0 35.4 L59.8 37.6 L59.6 39.5 L59.3 41.1 L58.9 42.7 L58.5 44.1 L57.9 45.4 L57.3 46.6 L56.5 47.8 L55.7 48.8 L54.8 49.8 L53.9 50.7 L52.8 51.6 L51.6 52.3 L50.4 53.0 L49.1 53.7 L47.6 54.2 L46.1 54.7 L44.4 55.1 L42.7 55.4 L40.7 55.7 L38.5 55.9 L36.0 56.0 L32.0 56.0 L28.0 56.0 L25.5 55.9 L23.3 55.7 L21.3 55.4 L19.6 55.1 L17.9 54.7 L16.4 54.2 L14.9 53.7 L13.6 53.0 L12.4 52.3 L11.2 51.6 L10.1 50.7 L9.2 49.8 L8.3 48.8 L7.5 47.8 L6.7 46.6 L6.1 45.4 L5.5 44.1 L5.1 42.7 L4.7 41.1 L4.4 39.5 L4.2 37.6 L4.0 35.4 L4.0 32.0 L4.0 28.6 L4.2 26.4 L4.4 24.5 L4.7 22.9 L5.1 21.3 L5.5 19.9 L6.1 18.6 L6.7 17.4 L7.5 16.2 L8.3 15.2 L9.2 14.2 L10.1 13.3 L11.2 12.4 L12.4 11.7 L13.6 11.0 L14.9 10.3 L16.4 9.8 L17.9 9.3 L19.6 8.9 L21.3 8.6 L23.3 8.3 L25.5 8.1 L28.0 8.0 L32.0 8.0 L36.0 8.0 L38.5 8.1 L40.7 8.3 L42.7 8.6 L44.4 8.9 L46.1 9.3 L47.6 9.8 L49.1 10.3 L50.4 11.0 L51.6 11.7 L52.8 12.4 L53.9 13.3 L54.8 14.2 L55.7 15.2 L56.5 16.2 L57.3 17.4 L57.9 18.6 L58.5 19.9 L58.9 21.3 L59.3 22.9 L59.6 24.5 L59.8 26.4 L60.0 28.6 Z" stroke="currentColor" stroke-width="4.5" stroke-linejoin="round"/><path d="M48.5 29.0 L48.5 30.2 L48.4 31.2 L48.3 32.1 L48.1 32.9 L47.8 33.7 L47.5 34.4 L47.2 35.1 L46.8 35.7 L46.4 36.4 L45.9 36.9 L45.3 37.5 L44.7 38.0 L44.1 38.5 L43.4 38.9 L42.7 39.3 L41.9 39.6 L41.1 40.0 L40.2 40.2 L39.3 40.5 L38.4 40.7 L37.3 40.8 L36.2 40.9 L35.0 41.0 L33.5 41.0 L32.0 41.0 L30.8 40.9 L29.7 40.8 L28.6 40.7 L27.7 40.5 L26.8 40.2 L25.9 40.0 L25.1 39.6 L24.3 39.3 L23.6 38.9 L22.9 38.5 L22.3 38.0 L21.7 37.5 L21.1 36.9 L20.6 36.4 L20.2 35.7 L19.8 35.1 L19.5 34.4 L19.2 33.7 L18.9 32.9 L18.7 32.1 L18.6 31.2 L18.5 30.2 L18.5 29.0 L18.5 27.8 L18.6 26.8 L18.7 25.9 L18.9 25.1 L19.2 24.3 L19.5 23.6 L19.8 22.9 L20.2 22.3 L20.6 21.6 L21.1 21.1 L21.7 20.5 L22.3 20.0 L22.9 19.5 L23.6 19.1 L24.3 18.7 L25.1 18.4 L25.9 18.0 L26.8 17.8 L27.7 17.5 L28.6 17.3 L29.7 17.2 L30.8 17.1 L32.0 17.0 L33.5 17.0 L35.0 17.0 L36.2 17.1 L37.3 17.2 L38.4 17.3 L39.3 17.5 L40.2 17.8 L41.1 18.0 L41.9 18.4 L42.7 18.7 L43.4 19.1 L44.1 19.5 L44.7 20.0 L45.3 20.5 L45.9 21.1 L46.4 21.6 L46.8 22.3 L47.2 22.9 L47.5 23.6 L47.8 24.3 L48.1 25.1 L48.3 25.9 L48.4 26.8 L48.5 27.8 Z" stroke="var(--accent-ink)" stroke-width="3" stroke-linejoin="round"/><circle cx="44" cy="40" r="4.6" fill="var(--coral)"/></svg>PROSIS</a>
+    <a class="mark" href="#top"><img src="assets/logo.png" alt="" width="26" height="26">MedVisual</a>
     <nav>
       <a href="#revision" class="hide-s">Producto</a>
       <a href="#demo">Demo</a>
@@ -402,9 +403,8 @@ footer{background:#000;border-top:1px solid rgba(255,255,255,.08)}
         <p class="note2">Caso 10013 del conjunto público PI-CAI. Captura del programa en ejecución.</p>
       </div>
       <div class="reveal">
-        <figure class="dev" style="margin:0">
-          <div class="screen"><span class="cam"></span><img src="assets/shots/contornos.jpg" alt="Ventana del programa con los contornos sobre una imagen T2W" loading="lazy" width="1600" height="1000"></div>
-          <div class="base"></div>
+        <figure class="dev" style="margin:0"><div class="bar"><i></i><i></i><i></i><span>MedVisual</span></div>
+          <div class="screen"><a href="assets/shots/contornos.jpg" target="_blank" rel="noopener" aria-label="Abrir la captura a tamaño completo"><img src="assets/shots/contornos.jpg" alt="Ventana del programa con los contornos sobre una imagen T2W" loading="lazy" width="1600" height="1000"></a></div>
         </figure>
       </div>
     </div>
@@ -416,14 +416,13 @@ footer{background:#000;border-top:1px solid rgba(255,255,255,.08)}
       <div class="reveal">
         <p class="num">02  Multiparamétrico</p>
         <h2>Las secuencias <small>sincronizadas.</small></h2>
-        <p class="body2">T2W, ADC, alto-b y la vista sagital en una sola pantalla, con los cortes alineados. Los contornos se calculan sobre T2W y se remuestrean a la malla de cada secuencia, y el programa lo deja escrito en pantalla.</p>
+        <p class="body2">T2W, ADC, alto-b y la vista sagital en una sola pantalla, con los cortes alineados. T2W y difusión son las secuencias centrales de PI-RADS v2.1<sup class="cite"><a href="#r4">[4]</a></sup>. Los contornos se calculan sobre T2W y se remuestrean a la malla de cada secuencia, y el programa lo deja escrito en pantalla.</p>
         
         <p class="note2">El rótulo naranja de cada panel indica que el contorno viene remuestreado desde T2W.</p>
       </div>
       <div class="reveal">
-        <figure class="dev" style="margin:0">
-          <div class="screen"><span class="cam"></span><img src="assets/shots/multiparametrico.jpg" alt="Vista de cuatro paneles con T2W, ADC, alto-b y sagital" loading="lazy" width="1600" height="1000"></div>
-          <div class="base"></div>
+        <figure class="dev" style="margin:0"><div class="bar"><i></i><i></i><i></i><span>MedVisual</span></div>
+          <div class="screen"><a href="assets/shots/multiparametrico.jpg" target="_blank" rel="noopener" aria-label="Abrir la captura a tamaño completo"><img src="assets/shots/multiparametrico.jpg" alt="Vista de cuatro paneles con T2W, ADC, alto-b y sagital" loading="lazy" width="1600" height="1000"></a></div>
         </figure>
       </div>
     </div>
@@ -440,9 +439,8 @@ footer{background:#000;border-top:1px solid rgba(255,255,255,.08)}
         <p class="note2">Ventana de próstata por defecto. La escala y la leyenda las dibuja el programa.</p>
       </div>
       <div class="reveal">
-        <figure class="dev" style="margin:0">
-          <div class="screen"><span class="cam"></span><img src="assets/shots/fusion.jpg" alt="Imagen T2W con el mapa ADC superpuesto y su barra de color" loading="lazy" width="1600" height="1000"></div>
-          <div class="base"></div>
+        <figure class="dev" style="margin:0"><div class="bar"><i></i><i></i><i></i><span>MedVisual</span></div>
+          <div class="screen"><a href="assets/shots/fusion.jpg" target="_blank" rel="noopener" aria-label="Abrir la captura a tamaño completo"><img src="assets/shots/fusion.jpg" alt="Imagen T2W con el mapa ADC superpuesto y su barra de color" loading="lazy" width="1600" height="1000"></a></div>
         </figure>
       </div>
     </div>
@@ -459,9 +457,8 @@ footer{background:#000;border-top:1px solid rgba(255,255,255,.08)}
         <p class="note2">El análisis se ejecuta solo al cargar el estudio.</p>
       </div>
       <div class="reveal">
-        <figure class="dev" style="margin:0">
-          <div class="screen"><span class="cam"></span><img src="assets/shots/medicion.jpg" alt="Panel de análisis cuantitativo con tabla de métricas y botones de exportación" loading="lazy" width="1600" height="1000"></div>
-          <div class="base"></div>
+        <figure class="dev" style="margin:0"><div class="bar"><i></i><i></i><i></i><span>MedVisual</span></div>
+          <div class="screen"><a href="assets/shots/medicion.jpg" target="_blank" rel="noopener" aria-label="Abrir la captura a tamaño completo"><img src="assets/shots/medicion.jpg" alt="Panel de análisis cuantitativo con tabla de métricas y botones de exportación" loading="lazy" width="1600" height="1000"></a></div>
         </figure>
       </div>
     </div>
@@ -473,14 +470,13 @@ footer{background:#000;border-top:1px solid rgba(255,255,255,.08)}
       <div class="reveal">
         <p class="num">05  Modelos</p>
         <h2>Los modelos corren <small>en tu propio equipo.</small></h2>
-        <p class="body2">Tres modelos nnU-Net: glándula, zonas y detección de cáncer clínicamente significativo, cada uno con su requisito de secuencias. Las imágenes no salen del computador del servicio, y cada resultado queda marcado como no certificado.</p>
+        <p class="body2">Tres modelos nnU-Net<sup class="cite"><a href="#r2">[2]</a></sup>: glándula, zonas y detección de cáncer clínicamente significativo, cada uno con su requisito de secuencias. Las imágenes no salen del computador del servicio, y cada resultado queda marcado como no certificado.</p>
         
-        <p class="note2">El aviso UNCERTIFIED es parte del programa, no un rótulo de esta página.</p>
+        
       </div>
       <div class="reveal">
-        <figure class="dev" style="margin:0">
-          <div class="screen"><span class="cam"></span><img src="assets/shots/modelos.jpg" alt="Panel de análisis con los tres modelos y el aviso de modelos no certificados" loading="lazy" width="1600" height="1000"></div>
-          <div class="base"></div>
+        <figure class="dev" style="margin:0"><div class="bar"><i></i><i></i><i></i><span>MedVisual</span></div>
+          <div class="screen"><a href="assets/shots/modelos.jpg" target="_blank" rel="noopener" aria-label="Abrir la captura a tamaño completo"><img src="assets/shots/modelos.jpg" alt="Panel de análisis con los tres modelos y el aviso de modelos no certificados" loading="lazy" width="1600" height="1000"></a></div>
         </figure>
       </div>
     </div>
@@ -534,7 +530,7 @@ footer{background:#000;border-top:1px solid rgba(255,255,255,.08)}
         </div>
       </div>
     </div>
-    <p class="disc"><b>Qué estás viendo.</b> Resultados precalculados por los modelos nnU-Net del proyecto sobre estudios del conjunto público PI-CAI. Esos estudios forman parte de los datos con que se entrenaron los modelos, así que el demo ilustra el flujo y <b>no estima desempeño</b>. Prototipo de investigación sin certificar: no usar para decisiones clínicas.</p>
+    <p class="disc"><b>Qué estás viendo.</b> Resultados precalculados por los modelos nnU-Net del proyecto sobre estudios del conjunto público PI-CAI<sup class="cite"><a href="#r3">[3]</a></sup>. Esos estudios forman parte de los datos con que se entrenaron los modelos, así que el demo ilustra el flujo y <b>no estima desempeño</b>. Prototipo de investigación sin certificar: no usar para decisiones clínicas.</p>
   </div>
 </section>
 
@@ -544,33 +540,30 @@ footer{background:#000;border-top:1px solid rgba(255,255,255,.08)}
     <div class="sec-head reveal">
       <p class="eyebrow">Evidencia y límites</p>
       <h2>Lo que está medido, y lo que todavía no.</h2>
-      <p class="lead">Preferimos mostrar los números con sus condiciones antes que una promesa redonda.</p>
+      <p class="lead">Cada cifra con las condiciones en que se midió.</p>
     </div>
     <div class="nums reveal">
-      <div><b>0,90</b><span>Dice en segmentación de glándula de la plataforma base, valor publicado en la literatura del proyecto.</span></div>
+      <div><b>0,90</b><span>Dice en segmentación de glándula de la plataforma base.</span></div>
       <div><b>108</b><span>Pruebas de mutación superadas en los módulos de modelos, exportación DICOM, trazabilidad y falla visible.</span></div>
       <div><b>≤0,001 mm</b><span>Error de geometría al exportar máscaras, corregido desde errores de 21 a 362 mm detectados en la verificación.</span></div>
     </div>
     <ul class="limits reveal">
-      <li>Prototipo de investigación sin certificar. No es un dispositivo médico y no sirve para decidir sobre un paciente.</li>
       <li>En un notebook de 8 GB sin tarjeta gráfica, el estudio completo tardó 33 min 29 s: 4 min 47 s la glándula, 4 min 58 s las zonas y 23 min 44 s la detección con sus tres pliegues.</li>
       <li>La prueba con equipos de otros fabricantes se hizo con un estudio por fabricante. En uno de ellos la segmentación de glándula falló y las zonas no se recuperaron.</li>
-      <li>Los casos del demo formaron parte del entrenamiento de los modelos, así que ilustran el flujo y no miden desempeño.</li>
     </ul>
   </div>
 </section>
 <section class="sec" id="proyecto">
   <div class="wrap">
     <div class="sec-head reveal">
-      <p class="eyebrow">Proyecto y transferencia</p>
-      <h2>De la tesis al servicio de imagenología.</h2>
-      <p class="lead">El programa nace de una plataforma de código abierto desarrollada en la Universidad de Valparaíso. El paso siguiente es llevarlo a un centro real, con su propio equipo de resonancia.</p>
+      <p class="eyebrow">Estado del proyecto</p>
+      <h2>Un prototipo funcional, en desarrollo.</h2>
+      <p class="lead">MedVisual se construye sobre DeepProstate<sup class="cite"><a href="#r1">[1]</a></sup>, una plataforma de código abierto desarrollada en la Universidad de Valparaíso. Hoy funciona de extremo a extremo; falta probarlo en un centro real.</p>
     </div>
     <div class="road reveal">
-      <div><p class="when">Hoy</p><h4>Prototipo verificado</h4><p>Modelos ejecutados de extremo a extremo sobre estudios públicos, con registro de cada corrida y exportación auditable.</p></div>
-      <div><p class="when">2026</p><h4>Piloto clínico</h4><p>Instalación en uno o dos servicios, con estudios propios del centro y medición del tiempo real de lectura.</p></div>
-      <div><p class="when">Después</p><h4>Expediente regulatorio</h4><p>Gestión de riesgos, ciclo de vida del software y sistema de calidad, en la ruta de un dispositivo médico de software.</p></div>
-      <div><p class="when">Meta</p><h4>Licencia anual</h4><p>Modelo de licencia por centro, con protección por derechos de autor, estudio de patentabilidad y registro de marca.</p></div>
+      <div><p class="when">Hoy</p><h4>Prototipo funcional</h4><p>Modelos ejecutados de extremo a extremo sobre estudios públicos, con registro de cada corrida y exportación auditable.</p></div>
+      <div><p class="when">Siguiente</p><h4>Pruebas con centros</h4><p>Evaluación con estudios propios de servicios de imagenología y medición del tiempo real de lectura.</p></div>
+      <div><p class="when">Después</p><h4>Validación clínica</h4><p>Evaluación del desempeño en estudios independientes y cumplimiento de la normativa que corresponda a un software médico.</p></div>
     </div>
   </div>
 </section>
@@ -578,11 +571,11 @@ footer{background:#000;border-top:1px solid rgba(255,255,255,.08)}
   <div class="wrap">
     <div class="cta-band reveal">
       <div style="position:relative;z-index:1">
-        <p class="eyebrow">Piloto</p>
-        <h2>¿Quieres probar PROSIS en tu centro?</h2>
-        <p>Buscamos adoptantes tempranos: servicios de imagenología y urología que quieran evaluar el sistema con sus propios estudios y ayudarnos a definir qué debe medir. Respondemos personalmente.</p>
+        <p class="eyebrow">Contacto</p>
+        <h2>¿Te interesa MedVisual?</h2>
+        <p>Estamos en desarrollo y buscamos servicios de imagenología y urología interesados en conocerlo y en orientar qué debe medir.</p>
         <div class="cta-row" style="margin-top:20px">
-          <a class="btn accent" id="mailto" href="#contacto" data-u="ronald.marca" data-d="postgrado.uv.cl" data-q="subject=Solicitud%20de%20piloto%20-%20PROSIS&amp;body=Hola%2C%20me%20interesa%20conocer%20el%20proyecto.%0A%0AInstituci%C3%B3n%3A%0ACargo%3A%0AEquipo%20de%20resonancia%20(fabricante%20y%20tesla)%3A%0AEstudios%20de%20pr%C3%B3stata%20por%20mes%3A">Solicitar piloto por correo</a>
+          <a class="btn accent" id="mailto" href="#contacto" data-u="ronald.marca" data-d="postgrado.uv.cl" data-q="subject=Contacto%20-%20MedVisual&amp;body=Hola%2C%20me%20interesa%20conocer%20el%20proyecto.%0A%0AInstituci%C3%B3n%3A%0ACargo%3A%0AEquipo%20de%20resonancia%20(fabricante%20y%20tesla)%3A%0AEstudios%20de%20pr%C3%B3stata%20por%20mes%3A">Escribir por correo</a>
           <a class="btn ghost" href="#demo">Volver al demo</a>
         </div>
       </div>
@@ -600,25 +593,25 @@ footer{background:#000;border-top:1px solid rgba(255,255,255,.08)}
     <div class="foot-grid">
       <div>
         <h4>Aviso importante</h4>
-        <p>PROSIS es un <b style="color:#fff">prototipo de investigación en desarrollo</b>. No es un dispositivo médico certificado y no debe usarse para diagnóstico ni para decisiones clínicas. Los resultados del demo son ilustrativos.</p>
-        <p style="margin-top:14px"><b style="color:#fff">PROSIS</b> — Prostate Oncology Segmentation and Imaging System<br>Universidad de Valparaíso, iHEALTH, Proyecto VIU 2026</p>
+        <p>MedVisual es un <b style="color:#fff">prototipo funcional en desarrollo</b>. No es un dispositivo médico certificado y no debe usarse para diagnóstico ni para decisiones clínicas. Los resultados del demo son ilustrativos.</p>
+        <p style="margin-top:14px"><b style="color:#fff">MedVisual</b> — análisis de resonancia de próstata con IA<br>Universidad de Valparaíso, iHEALTH, Proyecto VIU 2026</p>
       </div>
       <div>
         <h4>Datos del demo</h4>
-        <p>Imágenes: PI-CAI Public Training and Development Dataset (Saha et al., Zenodo 10.5281/zenodo.6624726), licencia CC BY-NC 4.0. Recortes y superposiciones del proyecto.</p>
-        <p>Modelos: nnU-Net v2.</p>
+        <p>Imágenes: PI-CAI Public Training and Development Dataset<sup class="cite"><a href="#r3">[3]</a></sup>, licencia CC BY-NC 4.0. Recortes y superposiciones del proyecto.</p>
+        <p>Modelos: nnU-Net v2<sup class="cite"><a href="#r2">[2]</a></sup>.</p>
       </div>
       <div>
         <h4>Referencias</h4>
-        <ol>
-          <li id="r1">Ferlay J, et al. GLOBOCAN 2022, IARC.</li>
-          <li id="r2">Greer MD, et al. AJR 2019;212:1197-1205.</li>
-          <li id="r3">Taya M, et al. BJU Int. 2024. doi:10.1111/bju.16452</li>
-          <li>Turkbey B, et al. Eur Urol 2019;76:340-351.</li>
+        <ol class="refs-list">
+          <li id="r1">Marca R, Salas R, Ponce S, Caprile P, Besa C. DeepProstate: AI-powered prostate MRI analysis platform [software]. Versión 1.4.3. 2025. <a href="https://github.com/Marquita-oss/DeepProstate">github.com/Marquita-oss/DeepProstate</a></li>
+          <li id="r2">Isensee F, Jaeger PF, Kohl SAA, Petersen J, Maier-Hein KH. nnU-Net: a self-configuring method for deep learning-based biomedical image segmentation. <i>Nat Methods.</i> 2021;18(2):203–211. <a href="https://doi.org/10.1038/s41592-020-01008-z">doi:10.1038/s41592-020-01008-z</a></li>
+          <li id="r3">Saha A, Bosma JS, Twilt JJ, et al. Artificial intelligence and radiologists in prostate cancer detection on MRI (PI-CAI). <i>Lancet Oncol.</i> 2024;25(7):879–887. <a href="https://doi.org/10.1016/S1470-2045(24)00220-1">doi:10.1016/S1470-2045(24)00220-1</a>. Datos: PI-CAI Public Training and Development Dataset, <a href="https://doi.org/10.5281/zenodo.6624726">doi:10.5281/zenodo.6624726</a>.</li>
+          <li id="r4">Turkbey B, Rosenkrantz AB, Haider MA, et al. Prostate Imaging Reporting and Data System Version 2.1: 2019 update of Prostate Imaging Reporting and Data System Version 2. <i>Eur Urol.</i> 2019;76(3):340–351.</li>
         </ol>
       </div>
     </div>
-    <p class="legal">© 2026 Proyecto PROSIS, Universidad de Valparaíso. Tipografías Fraunces, Source Sans 3 y JetBrains Mono bajo licencia SIL OFL.</p>
+    <p class="legal">© 2026 MedVisual, Universidad de Valparaíso. Tipografías Fraunces, Source Sans 3 y JetBrains Mono bajo licencia SIL OFL.</p>
   </div>
 </footer>
 <script src="assets/cases.js"></script>

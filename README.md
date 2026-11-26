@@ -1,7 +1,7 @@
-# prostate-mri-demo
+# MedVisual (prostate-mri-demo)
 
-Vista previa publica del proyecto PROSIS (Prostate Oncology Segmentation and Imaging System),
-Universidad de Valparaiso. Sitio estatico: capturas del programa, animacion 3D de las mascaras
+Vista previa publica de MedVisual, plataforma de analisis de resonancia de prostata con IA
+(construida sobre DeepProstate), Universidad de Valparaiso. Sitio estatico: capturas del programa, animacion 3D de las mascaras
 y un demo interactivo con resultados precalculados sobre estudios publicos PI-CAI.
 
 **Ver la pagina:** https://marquita-oss.github.io/prostate-mri-demo/
