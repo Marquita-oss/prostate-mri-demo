@@ -1,0 +1,692 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>PROSIS · Análisis de resonancia de próstata con IA</title>
+<meta name="description" content="PROSIS segmenta la próstata, marca focos sospechosos y entrega métricas reproducibles desde estudios DICOM. Prototipo de investigación de la Universidad de Valparaíso. Pruébalo en el demo.">
+<meta name="theme-color" content="#0B0B0F">
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:type" content="website">
+<meta property="og:title" content="PROSIS · Resonancia de próstata, analizada con claridad">
+<meta property="og:description" content="Demo interactivo con resultados reales: glándula, zonas y focos sospechosos sobre resonancia biparamétrica. Universidad de Valparaíso.">
+<meta property="og:image" content="https://marquita-oss.github.io/prostate-mri-demo/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<style>
+@font-face{font-family:"Fraunces";src:url(assets/fonts/fraunces-latin-500-normal.woff2) format("woff2");font-weight:500;font-style:normal;font-display:swap}
+@font-face{font-family:"Fraunces";src:url(assets/fonts/fraunces-latin-700-normal.woff2) format("woff2");font-weight:700;font-style:normal;font-display:swap}
+@font-face{font-family:"Fraunces";src:url(assets/fonts/fraunces-latin-500-italic.woff2) format("woff2");font-weight:500;font-style:italic;font-display:swap}
+@font-face{font-family:"Source Sans 3";src:url(assets/fonts/source-sans-3-latin-400-normal.woff2) format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"Source Sans 3";src:url(assets/fonts/source-sans-3-latin-600-normal.woff2) format("woff2");font-weight:600;font-display:swap}
+@font-face{font-family:"Source Sans 3";src:url(assets/fonts/source-sans-3-latin-700-normal.woff2) format("woff2");font-weight:700;font-display:swap}
+@font-face{font-family:"JetBrains Mono";src:url(assets/fonts/jetbrains-mono-latin-400-normal.woff2) format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"JetBrains Mono";src:url(assets/fonts/jetbrains-mono-latin-500-normal.woff2) format("woff2");font-weight:500;font-display:swap}
+:root{
+--ink:#0B0B0F;--ink-2:#15151A;--paper:#F3F3F5;--paper-2:#E8E8EC;--line:#D6D6DE;--muted:#6B6B76;--accent:#FF4DA6;--accent-ink:#B8005F;--coral:#E6007E;
+--gland:#ECECF0;--pz:#35D0E8;--tz:#FFC247;--lesion:#E6007E;--ref:#9BE564;
+--f-display:"Fraunces",Georgia,"Times New Roman",serif;--f-text:"Source Sans 3",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;--f-mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+--max:1120px;--r:18px;--ease:cubic-bezier(.2,.7,.2,1)
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:72px}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--f-text);font-size:18px;line-height:1.6;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+img,svg,canvas{max-width:100%}
+a{color:var(--accent-ink);text-underline-offset:3px}
+a:focus-visible,button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:6px}
+h1,h2,h3{font-family:var(--f-display);font-weight:700;line-height:1.12;margin:0;text-wrap:balance;letter-spacing:-.01em}
+h2{font-size:clamp(28px,4vw,44px)}
+h3{font-size:22px}
+p{margin:0 0 1em}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 max(20px,env(safe-area-inset-left))}
+.mono{font-family:var(--f-mono)}
+.eyebrow{font-family:var(--f-mono);font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin:0 0 14px}
+.sec.light .eyebrow{color:var(--accent-ink)}
+.lead{font-size:clamp(19px,2.2vw,22px);color:var(--muted);max-width:62ch}
+.dark .lead{color:#B8C4BA}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.num{font-variant-numeric:tabular-nums}
+
+/* nav */
+.nav{position:sticky;top:0;z-index:50;background:rgba(246,241,230,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.nav .wrap{display:flex;align-items:center;gap:22px;height:64px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);font-family:var(--f-display);font-weight:700;font-size:22px;letter-spacing:.01em}
+.brand svg{width:36px;height:36px;flex:none}
+.nav ul{display:flex;gap:20px;list-style:none;margin:0 0 0 auto;padding:0;font-size:16px}
+.nav li a{color:var(--ink);text-decoration:none;font-weight:600;opacity:.8}
+.nav li a:hover{opacity:1;text-decoration:underline}
+.btn{display:inline-flex;align-items:center;gap:9px;min-height:46px;padding:10px 22px;border-radius:999px;border:2px solid var(--ink);background:var(--ink);color:var(--paper);font:700 16px var(--f-text);text-decoration:none;cursor:pointer;transition:transform .15s var(--ease),background .15s,color .15s}
+.btn:hover{transform:translateY(-2px)}
+.btn.accent{background:var(--coral);border-color:var(--coral);color:#fff}
+.btn.ghost{background:transparent;color:inherit;border-color:currentColor}
+.btn.coral{background:var(--coral);border-color:var(--coral);color:#fff}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.btn svg{width:18px;height:18px;flex:none}
+.nav .btn{min-height:40px;padding:6px 18px;font-size:15px;margin-left:6px}
+@media(max-width:860px){.nav ul{display:none}.nav .btn{margin-left:auto}}
+
+/* sections */
+.sec{padding:clamp(56px,8vw,104px) 0;position:relative}
+.sec.dark{background:var(--ink);color:var(--paper)}
+.sec.alt{background:var(--paper-2)}
+.sec-head{margin-bottom:38px;max-width:760px}
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+.reveal.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}html{scroll-behavior:auto}}
+
+/* hero */
+.hero{background:var(--ink);color:var(--paper);padding:clamp(40px,6vw,84px) 0 clamp(48px,6vw,80px);overflow:hidden;position:relative}
+.hero:before{content:"";position:absolute;inset:0;background:radial-gradient(900px 500px at 78% 40%,rgba(230,0,126,.16),transparent 60%),radial-gradient(700px 420px at 10% 100%,rgba(255,255,255,.035),transparent 60%);pointer-events:none}
+.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(28px,5vw,64px);align-items:center;position:relative}
+.hero h1{font-size:clamp(34px,5.4vw,60px);margin-bottom:20px}
+.hero h1 em{font-style:italic;font-weight:500;color:var(--accent)}
+.hero .lead{margin-bottom:28px}
+.cta-row{display:flex;flex-wrap:wrap;gap:12px}
+.badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:28px;padding:0;list-style:none}
+.badges li{font:500 12.5px var(--f-mono);letter-spacing:.04em;padding:6px 12px;border:1px solid rgba(246,241,230,.25);border-radius:999px;color:#C9D3CB}
+.badges li.warn{border-color:#FFC247;color:#FFD98A}
+.vwr{position:relative;border-radius:22px;overflow:hidden;background:#000;box-shadow:0 30px 80px rgba(0,0,0,.45),0 0 0 1px rgba(246,241,230,.14);aspect-ratio:1/1;width:100%}
+.vwr canvas{display:block;width:100%;height:100%;touch-action:pan-y}
+.hud{position:absolute;font:500 12px var(--f-mono);color:#E8EEE9;text-shadow:0 1px 3px #000;pointer-events:none;letter-spacing:.02em}
+.hud.tl{left:14px;top:12px}.hud.tr{right:14px;top:12px;text-align:right}
+.hud.bl{left:14px;bottom:12px}.hud.br{right:14px;bottom:12px;text-align:right}
+.ori{position:absolute;font:700 13px var(--f-mono);color:rgba(232,238,233,.8);pointer-events:none}
+.ori.l{left:10px;top:50%}.ori.r{right:10px;top:50%}.ori.t{top:10px;left:50%}.ori.b{bottom:10px;left:50%}
+.scale{display:flex;align-items:center;gap:6px;margin-top:4px}
+.scale i{display:block;height:6px;border:2px solid #E8EEE9;border-top:none}
+.hero-cap{font:400 13px var(--f-text);color:#9DB0A2;margin:12px 4px 0}
+@media(max-width:900px){.hero-grid{grid-template-columns:1fr}}
+
+/* keys */
+.keys{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:2px solid var(--ink);border-bottom:2px solid var(--ink);margin-top:34px}
+.key{padding:22px 20px 22px 0}
+.key+.key{padding-left:20px;border-left:1px solid var(--line)}
+.key b{display:block;font:700 clamp(30px,4vw,46px)/1.05 var(--f-display);color:var(--ink);font-variant-numeric:tabular-nums}
+.key b small{font-size:.5em;color:var(--muted);font-weight:500}
+.key span{display:block;margin-top:8px;font-size:15px;color:var(--muted);line-height:1.4}
+.key sup a{font-size:.8em}
+@media(max-width:860px){.keys{grid-template-columns:1fr 1fr}.key:nth-child(3){border-left:none;padding-left:0}.key:nth-child(n+3){border-top:1px solid var(--line)}}
+
+/* steps */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;counter-reset:s;margin:0;padding:0;list-style:none}
+.step{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:24px 22px 22px;position:relative}
+.step:before{counter-increment:s;content:"0" counter(s);font:500 13px var(--f-mono);color:var(--accent-ink)}
+.step svg{width:64px;height:64px;display:block;margin:12px 0 14px}
+.step h3{font-size:21px;margin-bottom:8px}
+.step p{font-size:16px;color:var(--muted);margin:0}
+.step svg .draw{stroke-dasharray:var(--len,300);stroke-dashoffset:var(--len,300)}
+.step.in svg .draw{animation:dash 1.6s var(--ease) .2s forwards}
+.step.in svg .pop{animation:pop .6s var(--ease) 1s both}
+@keyframes dash{to{stroke-dashoffset:0}}
+@keyframes pop{from{opacity:0;transform:scale(.3)}to{opacity:1;transform:none}}
+.step svg .pop{transform-box:fill-box;transform-origin:center}
+@media(max-width:960px){.steps{grid-template-columns:1fr 1fr}}@media(max-width:560px){.steps{grid-template-columns:1fr}}
+
+/* demo */
+.demo-grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:28px;align-items:start}
+.demo .vwr{box-shadow:0 0 0 1px rgba(246,241,230,.16)}
+.controls{display:flex;align-items:center;gap:12px;margin-top:12px}
+.controls input[type=range]{flex:1;accent-color:var(--accent);min-width:0;height:28px}
+.iconbtn{width:42px;height:42px;border-radius:50%;border:1.5px solid rgba(246,241,230,.4);background:transparent;color:var(--paper);display:grid;place-items:center;cursor:pointer;flex:none}
+.iconbtn:hover{background:rgba(246,241,230,.1)}
+.iconbtn svg{width:18px;height:18px}
+.profile{display:block;width:100%;height:34px;margin-top:6px}
+.panel{background:rgba(246,241,230,.06);border:1px solid rgba(246,241,230,.14);border-radius:var(--r);padding:20px}
+.panel h3{font-size:17px;font-family:var(--f-mono);font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin-bottom:12px}
+.cases{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1.5px solid rgba(246,241,230,.3);background:transparent;color:var(--paper);border-radius:999px;padding:7px 14px;font:600 14px var(--f-text);cursor:pointer}
+.chip[aria-pressed=true]{background:var(--paper);color:var(--ink);border-color:var(--paper)}
+.chip small{font:500 11px var(--f-mono);opacity:.7;margin-left:6px}
+.run-row{display:flex;gap:10px;align-items:center;margin-top:16px;flex-wrap:wrap}
+.pulse{animation:pulse 2s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(230,0,126,.55)}70%{box-shadow:0 0 0 14px rgba(230,0,126,0)}100%{box-shadow:0 0 0 0 rgba(230,0,126,0)}}
+.pipe{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:8px}
+.pipe li{display:grid;grid-template-columns:22px 1fr;gap:10px;align-items:start;font-size:15px;color:#9DB0A2;position:relative}
+.pipe li .dot{width:20px;height:20px;border-radius:50%;border:2px solid #4A5E52;display:grid;place-items:center;margin-top:2px}
+.pipe li.run{color:var(--paper)}.pipe li.run .dot{border-color:var(--accent);border-top-color:transparent;animation:spin .8s linear infinite}
+.pipe li.done{color:var(--paper)}.pipe li.done .dot{background:var(--pz);border-color:var(--pz)}
+.pipe li.done .dot:after{content:"";width:6px;height:10px;border:solid var(--ink);border-width:0 2px 2px 0;transform:rotate(45deg) translate(-1px,-1px)}
+.pipe li.skip{opacity:.55}
+.pipe .bar{grid-column:2;height:3px;background:rgba(246,241,230,.12);border-radius:3px;overflow:hidden;margin-top:-4px}
+.pipe .bar i{display:block;height:100%;width:0;background:var(--accent)}
+.pipe small{display:block;font:400 12px var(--f-mono);color:#7F9386}
+@keyframes spin{to{transform:rotate(360deg)}}
+.pipe-note{font-size:13px;color:#8DA093;margin:10px 0 0}
+.layers{display:grid;gap:6px;margin:0;padding:0;list-style:none}
+.layers label{display:flex;align-items:center;gap:10px;cursor:pointer;font-size:15px}
+.layers input{accent-color:var(--accent);width:18px;height:18px}
+.layers .sw{width:14px;height:14px;border-radius:4px;flex:none}
+.layers .off,.layers.off{opacity:.45;pointer-events:none}
+.tabs{display:inline-flex;border:1.5px solid rgba(246,241,230,.3);border-radius:999px;overflow:hidden;margin-bottom:12px}
+.tabs button{background:transparent;border:0;color:var(--paper);font:600 14px var(--f-mono);padding:7px 14px;cursor:pointer}
+.tabs button[aria-pressed=true]{background:var(--paper);color:var(--ink)}
+.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:4px}
+.m{background:rgba(246,241,230,.07);border-radius:12px;padding:12px 12px 10px}
+.m b{display:block;font:700 26px/1.1 var(--f-display);font-variant-numeric:tabular-nums}
+.m b small{font:500 12px var(--f-mono);color:#9DB0A2;margin-left:3px}
+.m span{font-size:12.5px;color:#9DB0A2;line-height:1.3;display:block;margin-top:4px}
+.finding{margin-top:12px;padding:12px 14px;border-radius:12px;background:rgba(230,0,126,.16);border:1px solid rgba(230,0,126,.5);font-size:15px}
+.finding.none{background:rgba(246,241,230,.06);border-color:rgba(246,241,230,.14)}
+.cmp{margin-top:10px;padding:12px 14px;border-radius:12px;background:rgba(155,229,100,.1);border:1px solid rgba(155,229,100,.4);font-size:14.5px}
+.disc{margin-top:22px;padding:14px 18px;border-left:4px solid #FFC247;background:rgba(255,194,71,.09);font-size:14.5px;color:#D7DFD8;border-radius:0 10px 10px 0}
+.disc b{color:#fff}
+.metrics-wrap{opacity:.35;transition:opacity .5s}.metrics-wrap.on{opacity:1}
+@media(max-width:940px){.demo-grid{grid-template-columns:1fr}}
+
+/* tables & cards */
+.tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r);background:#fff}
+table{border-collapse:collapse;width:100%;min-width:720px;font-size:15.5px}
+th,td{padding:14px 16px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}
+thead th{font:600 13px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);background:var(--paper-2)}
+th.us,td.us{background:rgba(230,0,126,.07)}
+thead th.us{color:var(--ink)}
+tbody th{font-weight:600}
+td .v{font:700 17px var(--f-text)}td .n{display:block;font-size:13px;color:var(--muted);line-height:1.35}
+.yes{color:#1B7F4B}.part{color:#B7791F}.no{color:#A03030}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.card{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:24px}
+.card h3{margin-bottom:8px}.card p{color:var(--muted);font-size:16px;margin:0}
+.card .big{font:700 40px/1 var(--f-display);color:var(--ink);margin-bottom:6px;font-variant-numeric:tabular-nums}
+.card .big small{font-size:.45em;color:var(--muted);font-weight:500}
+.card .tag{display:inline-block;font:500 11.5px var(--f-mono);letter-spacing:.05em;text-transform:uppercase;padding:3px 9px;border-radius:999px;background:var(--paper-2);color:var(--muted);margin-bottom:10px}
+.sec.dark .card{background:rgba(246,241,230,.06);border-color:rgba(246,241,230,.14)}
+.sec.dark .card p{color:#B8C4BA}.sec.dark .card .big{color:var(--paper)}.sec.dark .card .tag{background:rgba(246,241,230,.1);color:#B8C4BA}
+@media(max-width:900px){.grid3{grid-template-columns:1fr}}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}@media(max-width:800px){.grid2{grid-template-columns:1fr}}
+
+/* timeline */
+.tl{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(5,1fr);gap:0;position:relative}
+.tl:before{content:"";position:absolute;left:0;right:0;top:15px;height:3px;background:rgba(246,241,230,.18)}
+.tl:after{content:"";position:absolute;left:0;top:15px;height:3px;width:var(--prog,0%);background:var(--accent);transition:width 1.6s var(--ease)}
+.tl li{position:relative;padding:44px 14px 0 0;font-size:15px;color:#B8C4BA}
+.tl li:before{content:"";position:absolute;left:0;top:6px;width:20px;height:20px;border-radius:50%;background:var(--ink);border:3px solid rgba(246,241,230,.3);z-index:1}
+.tl li.now:before{border-color:var(--accent);background:var(--accent)}
+.tl li.done:before{border-color:var(--accent);background:var(--accent)}
+.tl li b{display:block;color:var(--paper);font:700 17px var(--f-display);margin-bottom:4px}
+.tl li em{display:block;font:500 11.5px var(--f-mono);font-style:normal;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin-bottom:4px}
+@media(max-width:860px){.tl{grid-template-columns:1fr;gap:22px}.tl:before,.tl:after{display:none}.tl li{padding:0 0 0 34px}.tl li:before{top:2px}}
+
+/* status table small */
+.mini{width:100%;min-width:0;font-size:15px}
+.mini td,.mini th{padding:10px 14px}
+details{border:1px solid var(--line);border-radius:12px;background:#fff;padding:2px 18px;margin-top:14px}
+summary{cursor:pointer;font-weight:600;padding:12px 0}
+details p{font-size:15.5px;color:var(--muted)}
+
+/* contact */
+.cta-band{background:var(--ink);color:var(--paper);border-radius:28px;padding:clamp(32px,5vw,60px);display:grid;grid-template-columns:1.2fr .8fr;gap:28px;align-items:center;position:relative;overflow:hidden}
+.cta-band:before{content:"";position:absolute;right:-80px;top:-80px;width:360px;height:360px;border-radius:50%;border:2px solid rgba(230,0,126,.38)}
+.cta-band:after{content:"";position:absolute;right:20px;top:20px;width:160px;height:160px;border-radius:50%;border:2px solid rgba(255,255,255,.14)}
+.cta-band h2{margin-bottom:14px}.cta-band p{color:#B8C4BA}
+.people{display:grid;gap:12px;position:relative;z-index:1}
+.person{padding:14px 16px;border:1px solid rgba(246,241,230,.18);border-radius:14px;font-size:15px}
+.person b{display:block;font:700 18px var(--f-display)}
+.person span{color:#B8C4BA}
+@media(max-width:860px){.cta-band{grid-template-columns:1fr}}
+footer{background:var(--ink);color:#B8C4BA;padding:48px 0 56px;font-size:14.5px;margin-top:0}
+footer a{color:#E5C98A}
+footer h4{font:600 12px var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin:0 0 10px}
+.foot-grid{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:34px}
+.foot-grid ol{padding-left:18px;margin:0}.foot-grid li{margin-bottom:6px;line-height:1.45}
+.legal{margin-top:30px;padding-top:20px;border-top:1px solid rgba(246,241,230,.15);font-size:13.5px;color:#93A598}
+@media(max-width:860px){.foot-grid{grid-template-columns:1fr}}
+.qrbox{display:flex;gap:14px;align-items:center}
+.qrbox img{width:96px;height:96px;border-radius:8px;background:#fff;padding:4px}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="PROSIS, inicio"><svg viewBox="0 0 64 64" fill="none" aria-hidden="true" ><path d="M60.0 32.0 L60.0 35.4 L59.8 37.6 L59.6 39.5 L59.3 41.1 L58.9 42.7 L58.5 44.1 L57.9 45.4 L57.3 46.6 L56.5 47.8 L55.7 48.8 L54.8 49.8 L53.9 50.7 L52.8 51.6 L51.6 52.3 L50.4 53.0 L49.1 53.7 L47.6 54.2 L46.1 54.7 L44.4 55.1 L42.7 55.4 L40.7 55.7 L38.5 55.9 L36.0 56.0 L32.0 56.0 L28.0 56.0 L25.5 55.9 L23.3 55.7 L21.3 55.4 L19.6 55.1 L17.9 54.7 L16.4 54.2 L14.9 53.7 L13.6 53.0 L12.4 52.3 L11.2 51.6 L10.1 50.7 L9.2 49.8 L8.3 48.8 L7.5 47.8 L6.7 46.6 L6.1 45.4 L5.5 44.1 L5.1 42.7 L4.7 41.1 L4.4 39.5 L4.2 37.6 L4.0 35.4 L4.0 32.0 L4.0 28.6 L4.2 26.4 L4.4 24.5 L4.7 22.9 L5.1 21.3 L5.5 19.9 L6.1 18.6 L6.7 17.4 L7.5 16.2 L8.3 15.2 L9.2 14.2 L10.1 13.3 L11.2 12.4 L12.4 11.7 L13.6 11.0 L14.9 10.3 L16.4 9.8 L17.9 9.3 L19.6 8.9 L21.3 8.6 L23.3 8.3 L25.5 8.1 L28.0 8.0 L32.0 8.0 L36.0 8.0 L38.5 8.1 L40.7 8.3 L42.7 8.6 L44.4 8.9 L46.1 9.3 L47.6 9.8 L49.1 10.3 L50.4 11.0 L51.6 11.7 L52.8 12.4 L53.9 13.3 L54.8 14.2 L55.7 15.2 L56.5 16.2 L57.3 17.4 L57.9 18.6 L58.5 19.9 L58.9 21.3 L59.3 22.9 L59.6 24.5 L59.8 26.4 L60.0 28.6 Z" stroke="currentColor" stroke-width="4.5" stroke-linejoin="round"/><path d="M48.5 29.0 L48.5 30.2 L48.4 31.2 L48.3 32.1 L48.1 32.9 L47.8 33.7 L47.5 34.4 L47.2 35.1 L46.8 35.7 L46.4 36.4 L45.9 36.9 L45.3 37.5 L44.7 38.0 L44.1 38.5 L43.4 38.9 L42.7 39.3 L41.9 39.6 L41.1 40.0 L40.2 40.2 L39.3 40.5 L38.4 40.7 L37.3 40.8 L36.2 40.9 L35.0 41.0 L33.5 41.0 L32.0 41.0 L30.8 40.9 L29.7 40.8 L28.6 40.7 L27.7 40.5 L26.8 40.2 L25.9 40.0 L25.1 39.6 L24.3 39.3 L23.6 38.9 L22.9 38.5 L22.3 38.0 L21.7 37.5 L21.1 36.9 L20.6 36.4 L20.2 35.7 L19.8 35.1 L19.5 34.4 L19.2 33.7 L18.9 32.9 L18.7 32.1 L18.6 31.2 L18.5 30.2 L18.5 29.0 L18.5 27.8 L18.6 26.8 L18.7 25.9 L18.9 25.1 L19.2 24.3 L19.5 23.6 L19.8 22.9 L20.2 22.3 L20.6 21.6 L21.1 21.1 L21.7 20.5 L22.3 20.0 L22.9 19.5 L23.6 19.1 L24.3 18.7 L25.1 18.4 L25.9 18.0 L26.8 17.8 L27.7 17.5 L28.6 17.3 L29.7 17.2 L30.8 17.1 L32.0 17.0 L33.5 17.0 L35.0 17.0 L36.2 17.1 L37.3 17.2 L38.4 17.3 L39.3 17.5 L40.2 17.8 L41.1 18.0 L41.9 18.4 L42.7 18.7 L43.4 19.1 L44.1 19.5 L44.7 20.0 L45.3 20.5 L45.9 21.1 L46.4 21.6 L46.8 22.3 L47.2 22.9 L47.5 23.6 L47.8 24.3 L48.1 25.1 L48.3 25.9 L48.4 26.8 L48.5 27.8 Z" stroke="var(--accent-ink)" stroke-width="3" stroke-linejoin="round"/><circle cx="44" cy="40" r="4.6" fill="var(--coral)"/></svg><span>PROSIS</span></a>
+    <ul>
+      <li><a href="#demo">Demo</a></li>
+      <li><a href="#como">Cómo funciona</a></li>
+      <li><a href="#evidencia">Evidencia</a></li>
+      <li><a href="#transferencia">Transferencia</a></li>
+    </ul>
+    <a class="btn accent" href="#contacto">Solicitar piloto</a>
+  </div>
+</header>
+
+<main id="top">
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <p class="eyebrow">Software médico con IA · Valparaíso, Chile · en desarrollo</p>
+      <h1>La resonancia de próstata, analizada <em>en minutos</em> y medida siempre igual.</h1>
+      <p class="lead">PROSIS delimita la próstata y sus zonas, marca focos sospechosos y entrega volúmenes reproducibles a partir de estudios DICOM de cualquier fabricante. Un prototipo de la Universidad de Valparaíso, diseñado desde el inicio para convertirse en software médico certificable.</p>
+      <div class="cta-row">
+        <a class="btn accent" href="#demo" id="ctaDemo"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>Probar el demo</a>
+        <a class="btn ghost" href="#contacto">Solicitar piloto</a>
+      </div>
+      <ul class="badges">
+        <li>Universidad de Valparaíso</li><li>iHEALTH</li><li>Proyecto VIU 2026</li><li>TRL 3 → 4</li><li class="warn">Prototipo sin certificar</li>
+      </ul>
+    </div>
+    <figure style="margin:0" aria-label="Animación: cortes de una resonancia con contornos de próstata detectados">
+      <div class="vwr" id="heroV">
+        <canvas id="heroC" width="640" height="640" role="img" aria-label="Cortes axiales de una resonancia T2 de próstata con la glándula, las zonas y un foco sospechoso delineados por el sistema"></canvas>
+        <div class="hud tl" id="heroTl">Axial · T2W</div>
+        <div class="hud tr" id="heroTr"></div>
+        <div class="hud bl"><span id="heroLabel"></span></div>
+      </div>
+      <figcaption class="hero-cap">Caso público PI-CAI 10013 · contornos reales generados por los modelos del proyecto. Resultado de investigación, no diagnóstico.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- PROBLEMA -->
+<section class="sec light" id="problema">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">El problema</p>
+      <h2>Una resonancia bien hecha no basta si leerla depende de quién la mire.</h2>
+      <p class="lead">La resonancia biparamétrica es el estándar para detectar cáncer de próstata. Pero analizarla toma tiempo, exige expertise concentrado en pocos centros y produce lecturas que cambian entre especialistas.</p>
+    </div>
+    <div class="keys reveal">
+      <div class="key"><b class="num" data-count="9678" data-dec="0">9.678</b><span>casos nuevos de cáncer de próstata en Chile en 2022 <sup><a href="#r1">1</a></sup></span></div>
+      <div class="key"><b>20–30 <small>min</small></b><span>por estudio de resonancia biparamétrica en práctica clínica estándar</span></div>
+      <div class="key"><b class="num">55 % <small>vs 84 %</small></b><span>especificidad de lectores con menos frente a más experiencia <sup><a href="#r2">2</a></sup></span></div>
+      <div class="key"><b class="num">κ 0,22–0,51</b><span>acuerdo entre lectores al asignar categorías PI-RADS v2 <sup><a href="#r3">3</a></sup></span></div>
+    </div>
+  </div>
+</section>
+
+<!-- COMO FUNCIONA -->
+<section class="sec alt" id="como">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">Cómo funciona</p>
+      <h2>Del estudio DICOM a métricas que puedes auditar, en cuatro pasos.</h2>
+    </div>
+    <ol class="steps">
+      <li class="step reveal"><svg viewBox="0 0 64 64" fill="none" stroke="var(--ink)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path class="draw" style="--len:190" d="M10 22h14l4 5h26v22H10z"/><path class="draw" style="--len:60" d="M32 34v10m-5-5 5 5 5-5"/><circle class="pop" cx="50" cy="16" r="5" fill="var(--coral)" stroke="none"/></svg>
+        <h3>Abre el estudio</h3><p>Carga DICOM de cualquier fabricante, o MHA y NIfTI. Las secuencias T2W, ADC y alto-b se identifican solas.</p></li>
+      <li class="step reveal"><svg viewBox="0 0 64 64" fill="none" stroke="var(--ink)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path class="draw" style="--len:170" d="M32 10c14 0 22 8 22 20 0 13-9 24-22 24S10 43 10 30c0-12 8-20 22-20z"/><path class="draw" style="--len:110" d="M32 20c8 0 12 5 12 11s-5 12-12 12-12-6-12-12 4-11 12-11z" stroke="var(--accent-ink)"/></svg>
+        <h3>Segmenta</h3><p>Modelos nnU-Net delinean la glándula y sus zonas periférica y de transición, corte a corte.</p></li>
+      <li class="step reveal"><svg viewBox="0 0 64 64" fill="none" stroke="var(--ink)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path class="draw" style="--len:170" d="M32 10c14 0 22 8 22 20 0 13-9 24-22 24S10 43 10 30c0-12 8-20 22-20z"/><circle class="pop" cx="40" cy="38" r="6" fill="var(--coral)" stroke="none"/><path class="draw" style="--len:50" d="M10 56h44M16 56v-4m8 4v-3m8 3v-4m8 4v-3m8 3v-4"/></svg>
+        <h3>Detecta y mide</h3><p>Marca focos sospechosos y calcula volúmenes y diámetros, con el mismo criterio sin importar el operador.</p></li>
+      <li class="step reveal"><svg viewBox="0 0 64 64" fill="none" stroke="var(--ink)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path class="draw" style="--len:150" d="M18 8h22l8 8v40H18z"/><path class="draw" style="--len:60" d="M40 8v8h8M24 30h20M24 38h20M24 46h12"/><path class="pop" d="m40 46 4 4 8-9" stroke="var(--coral)"/></svg>
+        <h3>Revisa y exporta</h3><p>Edita a mano si hace falta, exporta DICOM SEG y deja un registro de auditoría verificable de cada análisis.</p></li>
+    </ol>
+  </div>
+</section>
+
+<!-- DEMO -->
+<section class="sec dark demo" id="demo">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">Demo interactivo</p>
+      <h2>Pruébalo ahora, sin instalar nada.</h2>
+      <p class="lead">Elige un estudio, pulsa Analizar y recorre los cortes. Son salidas reales de nuestros modelos sobre estudios públicos, precalculadas para que corran en tu navegador.</p>
+    </div>
+    <div class="demo-grid">
+      <div>
+        <div class="vwr" id="vwr">
+          <canvas id="cv" width="800" height="800" tabindex="0" role="img" aria-label="Visor de resonancia con capas de segmentación. Usa las flechas del teclado para cambiar de corte."></canvas>
+          <div class="hud tl" id="hTl">Axial · T2W</div>
+          <div class="hud tr" id="hTr">—</div>
+          <div class="hud bl"><div id="hBl"></div><div class="scale"><i id="scaleBar" style="width:11.1%"></i><span>10 mm</span></div></div>
+          <div class="hud br" id="hBr"></div>
+          <span class="ori l" title="Derecha del paciente">D</span><span class="ori r" title="Izquierda del paciente">I</span><span class="ori t" title="Anterior">A</span><span class="ori b" title="Posterior">P</span>
+        </div>
+        <div class="controls">
+          <button class="iconbtn" id="play" aria-label="Reproducir cortes"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></button>
+          <input id="slider" type="range" min="0" max="19" value="10" aria-label="Corte axial">
+          <button class="iconbtn" id="toLesion" aria-label="Ir al foco sospechoso" title="Ir al foco" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/></svg></button>
+        </div>
+        <canvas class="profile" id="prof" width="800" height="68" aria-hidden="true"></canvas>
+      </div>
+
+      <div>
+        <div class="panel">
+          <h3>1 · Elige un estudio</h3>
+          <div class="cases" id="cases"></div>
+          <div class="run-row">
+            <button class="btn accent pulse" id="run"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>Analizar estudio</button>
+            <span class="mono" style="font-size:12px;color:#8DA093" id="runHint">Animación acelerada</span>
+          </div>
+          <ul class="pipe" id="pipe" hidden></ul>
+          <p class="pipe-note" id="pipeNote" hidden>Los tiempos grises son los medidos en el prototipo (notebook de 8 GB, sin GPU). La animación dura segundos porque el resultado ya está calculado.</p>
+        </div>
+
+        <div class="panel metrics-wrap" id="results" style="margin-top:14px">
+          <h3>2 · Resultado</h3>
+          <div class="tabs" role="group" aria-label="Secuencia"><button data-seq="t2w" aria-pressed="true">T2W</button><button data-seq="adc" aria-pressed="false">ADC</button><button data-seq="hbv" aria-pressed="false">Alto-b</button></div>
+          <ul class="layers off" id="layers"></ul>
+          <div class="metrics" id="metrics" style="margin-top:14px"></div>
+          <div id="finding"></div>
+          <div id="cmp"></div>
+        </div>
+      </div>
+    </div>
+    <p class="disc"><b>Qué estás viendo.</b> Resultados precalculados por los modelos nnU-Net del proyecto sobre estudios del conjunto público PI-CAI. Esos estudios forman parte de los datos con que se entrenaron los modelos, así que el demo ilustra el flujo y <b>no estima desempeño</b>. Prototipo de investigación sin certificar: no usar para decisiones clínicas.</p>
+  </div>
+</section>
+
+<!-- DIFERENCIAL -->
+<section class="sec light" id="diferencial">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">Por qué es distinto</p>
+      <h2>Lo que existe es potente en algo, pero no resuelve todo junto.</h2>
+      <p class="lead">Las herramientas de investigación no están hechas para una sala de radiología, y las comerciales no están pensadas para la red pública chilena. PROSIS busca integrar segmentación, medición y trazabilidad en un solo producto específico de próstata.</p>
+    </div>
+    <div class="tbl-wrap reveal"><table>
+      <thead><tr><th></th><th>Plataformas generales<br>(p. ej. 3D Slicer)</th><th>Algoritmos de desafíos<br>(p. ej. PI-CAI)</th><th>Soluciones comerciales</th><th class="us">PROSIS</th></tr></thead>
+      <tbody>
+        <tr><th>Específico de próstata</th><td><span class="v part">◐</span><span class="n">Herramienta general</span></td><td><span class="v yes">✓</span><span class="n">Solo el algoritmo</span></td><td><span class="v part">◐</span><span class="n">Varía por producto</span></td><td class="us"><span class="v yes">✓</span><span class="n">Segmentación + zonas + focos</span></td></tr>
+        <tr><th>Interfaz clínica lista para usar</th><td><span class="v part">◐</span><span class="n">Orientada a investigación</span></td><td><span class="v no">—</span><span class="n">Código de investigación</span></td><td><span class="v yes">✓</span></td><td class="us"><span class="v yes">✓</span><span class="n">Prototipo funcional</span></td></tr>
+        <tr><th>Cualquier fabricante vía DICOM</th><td><span class="v yes">✓</span></td><td><span class="v no">—</span></td><td><span class="v part">◐</span><span class="n">Suele atarse a un ecosistema</span></td><td class="us"><span class="v yes">✓</span><span class="n">Probado en Siemens, Philips y GE (n = 1 cada uno)</span></td></tr>
+        <tr><th>Diseñado para certificación de software médico</th><td><span class="v no">—</span></td><td><span class="v no">—</span></td><td><span class="v yes">✓</span></td><td class="us"><span class="v part">◐</span><span class="n">En camino (IEC 62304 / ISO 13485)</span></td></tr>
+        <tr><th>Pensado para la red pública chilena</th><td><span class="v no">—</span></td><td><span class="v no">—</span></td><td><span class="v part">◐</span><span class="n">Sin presencia documentada en FONASA</span></td><td class="us"><span class="v yes">✓</span><span class="n">Objetivo del proyecto</span></td></tr>
+      </tbody></table></div>
+    <p style="font-size:14px;color:var(--muted);margin-top:12px">Comparación basada en el análisis del proyecto VIU; no es una evaluación exhaustiva de cada producto.</p>
+  </div>
+</section>
+
+<!-- SOFTWARE MEDICO -->
+<section class="sec dark" id="evidencia">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">Software médico desde el diseño</p>
+      <h2>No es solo un modelo que funciona: es ingeniería que se puede auditar.</h2>
+      <p class="lead">Cada decisión se verifica con pruebas que intentan romperla. Estas son cifras medidas en los registros de verificación del proyecto.</p>
+    </div>
+    <div class="grid3">
+      <div class="card reveal"><span class="tag">Geometría</span><div class="big">21–362 <small>mm → ≤ 0,001 mm</small></div><h3>Máscaras en su lugar</h3><p>Una auditoría halló máscaras exportadas desplazadas entre 21 y 362 mm respecto de la imagen. Tras la corrección, la desviación medida es de 0,001 mm o menos en series PI-CAI, GE, Siemens y Philips.</p></div>
+      <div class="card reveal"><span class="tag">Pruebas</span><div class="big">27/27 <small>defectos detectados</small></div><h3>Pruebas que prueban a las pruebas</h3><p>Se reintroducen defectos a propósito para comprobar que las pruebas los detectan: 27 de 27 en el módulo de IA, 30 de 30 en exportación DICOM SEG y 30 de 30 en trazabilidad.</p></div>
+      <div class="card reveal"><span class="tag">Trazabilidad</span><div class="big">SHA-256</div><h3>Cada análisis deja huella</h3><p>El registro de auditoría guarda el modelo (con su huella), las secuencias de entrada y los parámetros, en una cadena verificable.</p></div>
+      <div class="card reveal"><span class="tag">Honestidad</span><div class="big">UNCERTIFIED</div><h3>Nada se presenta como validado</h3><p>Todo resultado de un modelo sin certificar se marca como tal en pantalla y en el registro, hasta que el modelo esté en el registro de modelos certificados.</p></div>
+      <div class="card reveal"><span class="tag">Interoperabilidad</span><div class="big">DICOM SEG</div><h3>Habla el idioma del hospital</h3><p>Exporta segmentaciones como objetos DICOM Segmentation y verifica su geometría contra el estudio de origen. Preparado para integrarse con PACS.</p></div>
+      <div class="card reveal"><span class="tag">Fallar a la vista</span><div class="big">21/21</div><h3>Sin fallos silenciosos</h3><p>Las configuraciones inseguras se avisan al arrancar en lugar de caer en silencio; 21 de 21 defectos introducidos a propósito fueron detectados.</p></div>
+    </div>
+    <p style="margin-top:22px;font-size:15px;color:#9DB0A2" class="reveal">Marco de trabajo: ISO 13485 · IEC 62304 · ISO 14971 · IMDRF SaMD. La certificación ante el ISP y CERTE-MED es una etapa posterior del proyecto.</p>
+  </div>
+</section>
+
+<!-- ESTADO -->
+<section class="sec light" id="estado">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">Transparencia</p>
+      <h2>Dónde estamos hoy, sin maquillaje.</h2>
+      <p class="lead">Un proyecto de transferencia tecnológica se evalúa por lo que muestra y por lo que reconoce que le falta. Esto es lo que medimos.</p>
+    </div>
+    <div class="grid2">
+      <div class="card reveal">
+        <span class="tag">Resultado publicado</span>
+        <h3>Plataforma base (DeepProstate)</h3>
+        <p style="margin-bottom:12px">Dice sobre PI-CAI, publicado en IEEE-ICPRS 2025.</p>
+        <table class="mini"><tbody>
+          <tr><th>Glándula completa</th><td class="num"><b>0,90</b></td></tr>
+          <tr><th>Zonas anatómicas</th><td class="num"><b>0,88</b></td></tr>
+          <tr><th>Cáncer clínicamente significativo</th><td class="num"><b>0,60</b></td></tr>
+        </tbody></table>
+      </div>
+      <div class="card reveal">
+        <span class="tag">Validación externa inicial · provisoria</span>
+        <h3>Modelo de glándula en tres fabricantes</h3>
+        <p style="margin-bottom:12px">Un estudio por fabricante: no es una estimación de desempeño.</p>
+        <table class="mini"><tbody>
+          <tr><th>Siemens 3T</th><td class="num"><b>0,95</b></td></tr>
+          <tr><th>Philips 3T</th><td class="num"><b>0,89</b></td></tr>
+          <tr><th>GE 3T (bobina endorrectal)</th><td class="num"><b style="color:#A03030">0,60</b></td></tr>
+        </tbody></table>
+        <p style="margin:12px 0 0;font-size:14.5px">Esa brecha es justo lo que el proyecto busca cerrar con validación en más centros.</p>
+      </div>
+      <div class="card reveal">
+        <span class="tag">Velocidad</span>
+        <h3>Meta: menos de 10 minutos por estudio</h3>
+        <p style="margin-bottom:12px">Tiempos medidos hoy en un notebook de 8 GB, sin GPU:</p>
+        <table class="mini"><tbody>
+          <tr><th>Glándula</th><td class="num" id="t1"></td></tr>
+          <tr><th>Zonas PZ/TZ</th><td class="num" id="t2"></td></tr>
+          <tr><th>Focos sospechosos (3 pliegues)</th><td class="num" id="t3"></td></tr>
+        </tbody></table>
+        <p style="margin:12px 0 0;font-size:14.5px">La meta exige GPU y optimización. Todavía no está medida.</p>
+      </div>
+      <div class="card reveal">
+        <span class="tag">Madurez</span>
+        <h3>TRL 3 hoy, TRL 4 como meta</h3>
+        <p>Pasar de componentes validados por separado a un sistema integrado, auditado y documentado. Aún sin validación clínica formal ni certificación.</p>
+        <details><summary>¿Qué datos usa el demo?</summary><p>Cuatro estudios públicos del conjunto PI-CAI (CC BY-NC 4.0). Las imágenes son recortes de esos estudios; las superposiciones son salidas de los modelos del proyecto.</p></details>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRANSFERENCIA -->
+<section class="sec dark" id="transferencia">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">Transferencia tecnológica</p>
+      <h2>De una tesis de magíster a un producto para el sistema de salud.</h2>
+    </div>
+    <ol class="tl reveal" id="tl">
+      <li class="done"><em>Hecho</em><b>Tesis de magíster</b>DeepProstate, plataforma abierta publicada en IEEE-ICPRS 2025. TRL 3.</li>
+      <li class="now"><em>En curso</em><b>Proyecto VIU 2026</b>Sistema integrado, auditado y documentado. Propiedad intelectual y validación de mercado. Meta TRL 4.</li>
+      <li><em>Siguiente</em><b>Validación clínica</b>Con hospitales de la región y la red de la Universidad de Valparaíso.</li>
+      <li><em>Después</em><b>Certificación</b>Clasificación SaMD con el ISP y CERTE-MED.</li>
+      <li><em>Horizonte</em><b>Expansión</b>FDA, Unión Europea y Latinoamérica.</li>
+    </ol>
+    <div class="grid3" style="margin-top:44px">
+      <div class="card reveal"><span class="tag">Mercado inicial · Chile</span><div class="big">60–75 <small>centros</small></div><p>25–30 establecimientos de la red pública FONASA y 35–45 centros privados de imagenología con resonador compatible. Hipótesis del proyecto.</p></div>
+      <div class="card reveal"><span class="tag">Modelo</span><div class="big">Licencia <small>anual</small></div><p>Por centro, con actualizaciones de los modelos de IA y soporte. La hipótesis de precio está en validación con adoptantes tempranos.</p></div>
+      <div class="card reveal"><span class="tag">Protección</span><div class="big">3 <small>ejes</small></div><p>Derechos de autor del software, evaluación de patentabilidad como invención implementada por computador y registro de marca ante INAPI.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACTO -->
+<section class="sec light" id="contacto">
+  <div class="wrap">
+    <div class="cta-band reveal">
+      <div style="position:relative;z-index:1">
+        <p class="eyebrow">Piloto</p>
+        <h2>¿Quieres probar PROSIS en tu centro?</h2>
+        <p>Buscamos adoptantes tempranos: servicios de imagenología y urología que quieran evaluar el sistema con sus propios estudios y ayudarnos a definir qué debe medir. Respondemos personalmente.</p>
+        <div class="cta-row" style="margin-top:20px">
+          <a class="btn accent" id="mailto" href="#contacto" data-u="ronald.marca" data-d="postgrado.uv.cl" data-q="subject=Solicitud%20de%20piloto%20-%20PROSIS&amp;body=Hola%2C%20me%20interesa%20conocer%20el%20proyecto.%0A%0AInstituci%C3%B3n%3A%0ACargo%3A%0AEquipo%20de%20resonancia%20(fabricante%20y%20tesla)%3A%0AEstudios%20de%20pr%C3%B3stata%20por%20mes%3A">Solicitar piloto por correo</a>
+          <a class="btn ghost" href="#demo">Volver al demo</a>
+        </div>
+      </div>
+      <div class="people">
+        <div class="person"><b>Ronald Marca</b><span>Director del proyecto · Magíster en Ciencias de la Ingeniería, mención Ingeniería Biomédica, Universidad de Valparaíso</span></div>
+        <div class="person"><b>Dr. Rodrigo Salas Fuentes</b><span>Profesor guía · Facultad de Ingeniería, Universidad de Valparaíso</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <h4>Aviso importante</h4>
+        <p>PROSIS es un <b style="color:#fff">prototipo de investigación en desarrollo</b>. No es un dispositivo médico certificado y no debe usarse para diagnóstico ni para decisiones clínicas. Los resultados del demo son ilustrativos.</p>
+        <p style="margin-top:14px"><b style="color:#fff">PROSIS</b> · Prostate Oncology Segmentation and Imaging System<br>Universidad de Valparaíso · iHEALTH · Proyecto VIU 2026</p>
+      </div>
+      <div>
+        <h4>Datos del demo</h4>
+        <p>Imágenes: PI-CAI Public Training and Development Dataset (Saha et al., Zenodo 10.5281/zenodo.6624726), licencia CC BY-NC 4.0. Recortes y superposiciones del proyecto.</p>
+        <p>Modelos: nnU-Net v2.</p>
+      </div>
+      <div>
+        <h4>Referencias</h4>
+        <ol>
+          <li id="r1">Ferlay J, et al. GLOBOCAN 2022, IARC.</li>
+          <li id="r2">Greer MD, et al. AJR 2019;212:1197-1205.</li>
+          <li id="r3">Taya M, et al. BJU Int. 2024. doi:10.1111/bju.16452</li>
+          <li>Turkbey B, et al. Eur Urol 2019;76:340-351.</li>
+        </ol>
+      </div>
+    </div>
+    <p class="legal">© 2026 Proyecto PROSIS, Universidad de Valparaíso. Tipografías Fraunces, Source Sans 3 y JetBrains Mono bajo licencia SIL OFL.</p>
+  </div>
+</footer>
+
+<script src="assets/cases.js"></script>
+<script>
+(function(){
+"use strict";
+var D=window.PROSIS,CASES=D.cases,META=D.meta;
+var COL={gland:"#ECECF0",pz:"#35D0E8",tz:"#FFC247",lesion:"#E6007E",ref:"#9BE564"};
+var LABEL={gland:"Glándula",pz:"Zona periférica",tz:"Zona de transición",lesion:"Foco sospechoso",ref:"Anotación experta (PI-CAI)"};
+var ZN={PZ:"zona periférica",TZ:"zona de transición"};
+var reduce=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
+var $=function(s){return document.querySelector(s)};
+var fmt=function(n,d){d=d==null?1:d;return Number(n).toLocaleString("es-CL",{minimumFractionDigits:d,maximumFractionDigits:d})};
+var mmss=function(s){var m=Math.floor(s/60),r=Math.round(s-m*60);return m+" min "+(r<10?"0":"")+r+" s"};
+var sleep=function(ms){return new Promise(function(r){setTimeout(r,ms)})};
+function tween(ms,fn){return new Promise(function(res){var t0=performance.now();(function f(now){var k=Math.min(1,(now-t0)/ms);fn(k*k*(3-2*k));if(k<1)requestAnimationFrame(f);else res()})(t0)})}
+var imgCache={};
+function loadImg(src){if(!imgCache[src])imgCache[src]=new Promise(function(res,rej){var i=new Image();i.onload=function(){res(i)};i.onerror=function(){rej(new Error("No se pudo cargar "+src))};i.src=src});return imgCache[src]}
+
+/* ---------- Viewer ---------- */
+function Viewer(cv,opt){this.cv=cv;this.ctx=cv.getContext("2d");this.c=null;this.seq="t2w";this.i=0;this.img=null;opt=opt||{};this.onSlice=opt.onSlice||null;
+ this.vis={gland:0,pz:0,tz:0,lesion:0,ref:0};this.rev={gland:1,pz:1,tz:1,lesion:1,ref:1};this.auto=null;this.pulse=false;var self=this;
+ if(window.ResizeObserver){new ResizeObserver(function(){self.resize()}).observe(cv.parentElement)}else{window.addEventListener("resize",function(){self.resize()})}
+ this.resize()}
+Viewer.prototype.resize=function(){var r=this.cv.parentElement.getBoundingClientRect(),dpr=Math.min(window.devicePixelRatio||1,2),s=Math.round(r.width*dpr);if(s>0&&this.cv.width!==s){this.cv.width=s;this.cv.height=s}this.draw(performance.now())};
+Viewer.prototype.setCase=function(id,seq){var self=this;this.c=CASES[id];this.seq=seq||this.seq;return loadImg("assets/c"+id+"_"+this.seq+".jpg").then(function(im){self.img=im;self.i=Math.max(0,Math.min(self.i,self.c.n_tiles-1));self.draw(performance.now())})};
+Viewer.prototype.setSeq=function(seq){var self=this;this.seq=seq;return loadImg("assets/c"+this.c.id+"_"+seq+".jpg").then(function(im){self.img=im;self.draw(performance.now())})};
+Viewer.prototype.setSlice=function(i){if(!this.c)return;this.i=Math.max(0,Math.min(this.c.n_tiles-1,i));this.draw(performance.now());if(this.onSlice)this.onSlice(this.i)};
+Viewer.prototype.draw=function(t){var c=this.c;if(!c||!this.img)return;var ctx=this.ctx,W=this.cv.width,tile=c.tile,col=this.i%c.cols,row=Math.floor(this.i/c.cols),k=W/tile,s=W/560;
+ ctx.clearRect(0,0,W,W);ctx.fillStyle="#000";ctx.fillRect(0,0,W,W);ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality="high";
+ ctx.drawImage(this.img,col*tile,row*tile,tile,tile,0,0,W,W);
+ var order=["gland","tz","pz","ref","lesion"],self=this;
+ order.forEach(function(L){var a=self.vis[L];if(!a)return;var polys=c.contours[L][self.i];if(!polys||!polys.length)return;var rev=self.rev[L];
+  ctx.save();if(rev<1){ctx.beginPath();ctx.rect(0,0,W,W*rev);ctx.clip()}
+  ctx.beginPath();polys.forEach(function(p){ctx.moveTo(p[0]*k,p[1]*k);for(var m=2;m<p.length;m+=2)ctx.lineTo(p[m]*k,p[m+1]*k);ctx.closePath()});
+  ctx.globalAlpha=a;if(L!=="ref"){ctx.fillStyle=COL[L]+(L==="lesion"?"59":"22");ctx.fill("evenodd")}
+  ctx.lineJoin="round";var lw=(L==="lesion"?3.4:2.2)*s;if(L==="ref")ctx.setLineDash([9*s,6*s]);ctx.lineWidth=lw+2.6*s;ctx.strokeStyle="rgba(0,0,0,.6)";ctx.stroke();ctx.lineWidth=lw;ctx.strokeStyle=COL[L];ctx.stroke();ctx.restore();
+  if(rev<1&&rev>0){ctx.save();var g=ctx.createLinearGradient(0,W*rev-14*s,0,W*rev+2);g.addColorStop(0,"rgba(255,255,255,0)");g.addColorStop(1,COL[L]);ctx.fillStyle=g;ctx.fillRect(0,W*rev-14*s,W,16*s);ctx.restore()}
+  if(L==="lesion"&&rev>=1){var cx=0,cy=0,n=0;polys.forEach(function(p){for(var m=0;m<p.length;m+=2){cx+=p[m];cy+=p[m+1];n++}});cx=cx/n*k;cy=cy/n*k;
+   if(!reduce){var ph=((t||0)%1600)/1600;ctx.save();ctx.globalAlpha=(1-ph)*.9*a;ctx.strokeStyle="#FF4DA6";ctx.lineWidth=2*s;ctx.beginPath();ctx.arc(cx,cy,(12+ph*26)*s,0,6.2832);ctx.stroke();ctx.restore()}
+   var les=c.lesions&&c.lesions[0];if(les&&a>0.5){var txt="Foco sospechoso · "+fmt(les.ml,2)+" mL";ctx.save();ctx.font="600 "+(13*s)+"px 'Source Sans 3',system-ui,sans-serif";var tw=ctx.measureText(txt).width+14*s,bx=Math.min(W-tw-8*s,Math.max(8*s,cx+16*s)),by=Math.max(30*s,cy-34*s);ctx.fillStyle="rgba(20,38,30,.88)";ctx.strokeStyle=COL.lesion;ctx.lineWidth=1.4*s;ctx.beginPath();(ctx.roundRect?ctx.roundRect(bx,by,tw,22*s,11*s):ctx.rect(bx,by,tw,22*s));ctx.fill();ctx.stroke();ctx.fillStyle="#fff";ctx.fillText(txt,bx+7*s,by+15.5*s);ctx.restore()}}
+ })};
+/* shared animation clock: redraw viewers that pulse while visible */
+var live=[];
+function loop(t){for(var i=0;i<live.length;i++){var v=live[i];if(v.visible){if(v.auto)v.auto(t);else if(v.pulse)v.draw(t)}}requestAnimationFrame(loop)}
+function watch(v,el){v.visible=false;live.push(v);if(window.IntersectionObserver){new IntersectionObserver(function(es){v.visible=es[0].isIntersecting},{threshold:.15}).observe(el)}else v.visible=true}
+
+/* ---------- Hero ---------- */
+var hero=new Viewer($("#heroC"));
+var heroOrder=[];
+hero.setCase("10013","t2w").then(function(){
+ var c=hero.c;for(var i=0;i<c.n_tiles;i++){if(c.area_mm2.gland[i]>0)heroOrder.push(i)}
+ ["gland","pz","tz","lesion"].forEach(function(L){hero.vis[L]=1});hero.pulse=true;
+ var les=c.area_mm2.lesion,best=-1,bv=0;les.forEach(function(v,i){if(v>bv){bv=v;best=i}});
+ if(reduce){hero.i=best>=0?best:heroOrder[Math.floor(heroOrder.length/2)];hero.draw(0);$("#heroTr").textContent="Corte "+c.z_index[hero.i]+"/"+c.n_total;return}
+ var STEP=620,lastIdx=-1;
+ hero.auto=function(t){var idx=Math.floor(t/STEP)%heroOrder.length,ph=(t%STEP)/STEP;hero.i=heroOrder[idx];
+  ["gland","pz","tz","lesion"].forEach(function(L){hero.rev[L]=Math.min(1,ph/.55)});
+  if(idx!==lastIdx){lastIdx=idx;$("#heroTr").textContent="Corte "+c.z_index[hero.i]+"/"+c.n_total;
+   var g=c.area_mm2.gland[hero.i];$("#heroLabel").textContent=g>0?"Glándula "+fmt(g,0)+" mm² en este corte":""}
+  hero.draw(t)};
+ watch(hero,$("#heroV"))});
+
+/* ---------- Demo ---------- */
+var V=new Viewer($("#cv"),{onSlice:onSlice});V.pulse=true;
+var st={id:"10013",analyzed:false,running:false,playing:false,timer:null};
+var CASE_IDS=Object.keys(CASES);
+var ui={cases:$("#cases"),run:$("#run"),pipe:$("#pipe"),pipeNote:$("#pipeNote"),layers:$("#layers"),metrics:$("#metrics"),results:$("#results"),finding:$("#finding"),cmp:$("#cmp"),slider:$("#slider"),play:$("#play"),toLesion:$("#toLesion"),prof:$("#prof"),hTr:$("#hTr"),hBl:$("#hBl"),hBr:$("#hBr"),hTl:$("#hTl"),scale:$("#scaleBar")};
+var SEQN={t2w:"T2W",adc:"ADC",hbv:"Alto-b"};
+
+function buildCases(){ui.cases.innerHTML="";CASE_IDS.forEach(function(id){var c=CASES[id],b=document.createElement("button");b.className="chip";b.setAttribute("aria-pressed",id===st.id?"true":"false");b.dataset.id=id;b.innerHTML="Caso "+id+"<small>"+(c.has_cspca?"con focos":"glándula y zonas")+"</small>";b.addEventListener("click",function(){selectCase(id)});ui.cases.appendChild(b)})}
+function lesionSlice(c){var a=c.area_mm2.lesion,best=-1,bv=0;a.forEach(function(v,i){if(v>bv){bv=v;best=i}});return best}
+function glandMid(c){var a=c.area_mm2.gland,best=0,bv=0;a.forEach(function(v,i){if(v>bv){bv=v;best=i}});return best}
+function onSlice(i){var c=V.c;if(!c)return;ui.slider.value=i;ui.hTr.textContent="Corte "+c.z_index[i]+"/"+c.n_total;var g=c.area_mm2.gland[i];
+ ui.hBr.innerHTML=(V.vis.gland&&g>0)?"Glándula "+fmt(g,0)+" mm²":"";drawProfile()}
+function drawProfile(){var cv=ui.prof,c=V.c;if(!c)return;var w=cv.clientWidth*(window.devicePixelRatio||1)|0;if(w&&cv.width!==w){cv.width=w;cv.height=Math.round(34*(window.devicePixelRatio||1))}
+ var ctx=cv.getContext("2d"),W=cv.width,H=cv.height,n=c.n_tiles,mx=Math.max.apply(null,c.area_mm2.gland)||1,bw=W/n;ctx.clearRect(0,0,W,H);
+ for(var i=0;i<n;i++){var h=Math.max(2,(c.area_mm2.gland[i]/mx)*(H-6)),x=i*bw;ctx.fillStyle=i===V.i?"#FF4DA6":"rgba(246,241,230,.28)";ctx.fillRect(x+1,H-h,bw-2,h);
+  if(st.analyzed&&c.area_mm2.lesion[i]>0){ctx.fillStyle="#FF4D5E";ctx.beginPath();ctx.arc(x+bw/2,5,3.2*(window.devicePixelRatio||1),0,6.283);ctx.fill()}}}
+function setHud(){var c=V.c;ui.hTl.textContent="Axial · "+SEQN[V.seq];ui.scale.style.width=(10/c.fov_mm*100)+"%"}
+function setupSlider(){var c=V.c;ui.slider.max=c.n_tiles-1;var ls=lesionSlice(c);ui.toLesion.hidden=!(st.analyzed&&ls>=0&&c.has_cspca)}
+function layerList(c){return[["gland",1],["pz",1],["tz",1],["lesion",c.has_cspca&&c.lesions.length>0?1:0],["ref",1]]}
+
+function selectCase(id){if(st.running)return;stopPlay();st.id=id;st.analyzed=false;
+ Array.prototype.forEach.call(ui.cases.children,function(b){b.setAttribute("aria-pressed",b.dataset.id===id?"true":"false")});
+ ["gland","pz","tz","lesion","ref"].forEach(function(L){V.vis[L]=0;V.rev[L]=1});
+ ui.pipe.hidden=true;ui.pipeNote.hidden=true;ui.results.classList.remove("on");ui.layers.classList.add("off");ui.layers.innerHTML="";ui.metrics.innerHTML="";ui.finding.innerHTML="";ui.cmp.innerHTML="";
+ ui.run.disabled=false;ui.run.classList.add("pulse");setSeqBtn("t2w");
+ return V.setCase(id,"t2w").then(function(){V.i=glandMid(V.c);setupSlider();setHud();V.setSlice(V.i)})}
+function setSeqBtn(seq){Array.prototype.forEach.call(document.querySelectorAll(".tabs button"),function(b){b.setAttribute("aria-pressed",b.dataset.seq===seq?"true":"false")})}
+Array.prototype.forEach.call(document.querySelectorAll(".tabs button"),function(b){b.addEventListener("click",function(){setSeqBtn(b.dataset.seq);V.setSeq(b.dataset.seq).then(setHud)})});
+
+function buildSteps(c){var T=META.runtimes_s;return[
+ {t:"Leyendo el estudio y detectando secuencias",d:"T2W · ADC · alto-b",ms:900},
+ {t:"Verificando los modelos",d:"huella SHA-256 registrada en la auditoría",ms:700},
+ {t:"Segmentando la glándula",d:"prototipo: "+mmss(T.gland),ms:1500,layers:["gland"]},
+ {t:"Segmentando zonas periférica y de transición",d:"prototipo: "+mmss(T.zones),ms:1500,layers:["pz","tz"]},
+ c.has_cspca?{t:"Buscando focos sospechosos",d:"prototipo: "+mmss(T.cspca)+" con 3 pliegues",ms:2000,layers:["lesion"]}:{t:"Buscando focos sospechosos",d:"no ejecutado en este caso del demo",ms:0,skip:true},
+ {t:"Calculando métricas y registrando la auditoría",d:"volúmenes, diámetros y cadena de auditoría",ms:800}]}
+function drawPipe(steps){ui.pipe.innerHTML="";steps.forEach(function(s,i){var li=document.createElement("li");if(s.skip)li.className="skip";li.innerHTML='<span class="dot"></span><span>'+s.t+"<small>"+s.d+'</small></span><div class="bar"><i></i></div>';ui.pipe.appendChild(li)});ui.pipe.hidden=false;ui.pipeNote.hidden=false}
+function stepEl(i){return ui.pipe.children[i]}
+async function runAnalysis(){
+ if(st.running)return;if(st.analyzed){await selectCase(st.id)}
+ st.running=true;stopPlay();var c=V.c;ui.run.disabled=true;ui.run.classList.remove("pulse");ui.results.classList.remove("on");ui.layers.classList.add("off");
+ ["gland","pz","tz","lesion","ref"].forEach(function(L){V.vis[L]=0;V.rev[L]=0});
+ var focus=(c.has_cspca&&lesionSlice(c)>=0)?lesionSlice(c):glandMid(c);V.setSlice(focus);
+ var steps=buildSteps(c);drawPipe(steps);
+ for(var i=0;i<steps.length;i++){var s=steps[i],el=stepEl(i),bar=el.querySelector(".bar i");
+  if(s.skip){continue}
+  el.classList.add("run");(s.layers||[]).forEach(function(L){V.vis[L]=1;V.rev[L]=0});
+  await tween(reduce?1:s.ms,function(k){bar.style.width=(k*100)+"%";(s.layers||[]).forEach(function(L){V.rev[L]=k});V.draw(performance.now())});
+  (s.layers||[]).forEach(function(L){V.rev[L]=1});el.classList.remove("run");el.classList.add("done");bar.style.width="100%"}
+ st.analyzed=true;st.running=false;ui.run.disabled=false;ui.run.innerHTML='<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>Analizar de nuevo';
+ showResults(c);setupSlider();V.setSlice(V.i)}
+
+function showResults(c){ui.results.classList.add("on");ui.layers.classList.remove("off");ui.layers.innerHTML="";
+ layerList(c).forEach(function(p){var L=p[0],ok=p[1],li=document.createElement("li"),id="ly_"+L;
+  li.innerHTML='<label class="'+(ok?"":"off")+'"><input type="checkbox" id="'+id+'" '+(ok&&L!=="ref"?"checked":"")+(ok?"":" disabled")+'><span class="sw" style="background:'+COL[L]+'"></span>'+LABEL[L]+(ok?"":" <small class='mono' style='opacity:.7'>(no disponible)</small>")+"</label>";
+  ui.layers.appendChild(li);var inp=li.querySelector("input");
+  if(ok){V.vis[L]=inp.checked?1:0;inp.addEventListener("change",function(){var from=V.vis[L],to=inp.checked?1:0;tween(reduce?1:260,function(k){V.vis[L]=from+(to-from)*k;V.draw(performance.now())}).then(function(){V.vis[L]=to;if(L==="ref")renderCmp(c);onSlice(V.i)})})}});
+ var M=[["gland_ml","Glándula"],["pz_ml","Zona periférica"],["tz_ml","Zona de transición"]];
+ ui.metrics.innerHTML="";M.forEach(function(m){var d=document.createElement("div");d.className="m";d.innerHTML='<b data-v="'+c[m[0]]+'">0<small>mL</small></b><span>'+m[1]+"</span>";ui.metrics.appendChild(d)});
+ Array.prototype.forEach.call(ui.metrics.querySelectorAll("b"),function(b){var v=parseFloat(b.dataset.v);tween(reduce?1:900,function(k){b.innerHTML=fmt(v*k,1)+"<small>mL</small>"})});
+ if(!c.has_cspca){ui.finding.innerHTML='<div class="finding none">La detección de focos no se ejecutó en este estudio del demo; la anotación experta se muestra solo como referencia.</div>'}
+ else if(!c.lesions.length){ui.finding.innerHTML='<div class="finding none">El modelo no marcó focos sospechosos en este estudio.</div>'}
+ else{var l=c.lesions[0],zone=l.zone?ZN[l.zone]:"zona no determinada";ui.finding.innerHTML='<div class="finding"><b>'+c.lesions.length+" foco sospechoso</b> · "+fmt(l.ml,2)+" mL · diámetro máximo "+fmt(l.diam_mm,1)+" mm · "+zone+" · "+l.slices+" cortes</div>"}
+ renderCmp(c);drawProfile()}
+function renderCmp(c){if(!V.vis.ref){ui.cmp.innerHTML="";return}var k=c.compare,r=c.ref_lesions[0],txt;
+ if(!k){txt="Anotación experta: "+c.ref_lesions.length+" lesión de "+fmt(r.ml,2)+" mL (referencia; en este caso no se ejecutó el modelo de focos).";}
+ else if(k.detected>=k.ref_lesions){txt="El foco del modelo se solapa con la lesión anotada por expertos (Dice "+fmt(k.dice,2)+"). Un solo caso: es ilustrativo, no una medida de desempeño."}
+ else{txt="El modelo <b>no</b> se solapó con la lesión anotada y marcó "+k.false_positive_components+" foco en otro lugar (falso positivo). Mostramos también los fallos: un solo caso no mide desempeño."}
+ ui.cmp.innerHTML='<div class="cmp">'+txt+"</div>"}
+
+ui.run.addEventListener("click",runAnalysis);
+ui.slider.addEventListener("input",function(){V.setSlice(+ui.slider.value)});
+ui.toLesion.addEventListener("click",function(){var s=lesionSlice(V.c);if(s>=0)V.setSlice(s)});
+$("#cv").addEventListener("keydown",function(e){if(e.key==="ArrowRight"||e.key==="ArrowDown"){V.setSlice(V.i+1);e.preventDefault()}else if(e.key==="ArrowLeft"||e.key==="ArrowUp"){V.setSlice(V.i-1);e.preventDefault()}});
+(function(){var dragging=false,y0=0,i0=0,cv=$("#cv");cv.addEventListener("pointerdown",function(e){if(e.pointerType==="touch")return;dragging=true;y0=e.clientY;i0=V.i;cv.setPointerCapture(e.pointerId);cv.focus({preventScroll:true})});
+ cv.addEventListener("pointermove",function(e){if(!dragging)return;var d=Math.round((e.clientY-y0)/(cv.clientHeight/V.c.n_tiles));V.setSlice(i0+d)});
+ cv.addEventListener("pointerup",function(){dragging=false});cv.addEventListener("pointercancel",function(){dragging=false});
+ cv.addEventListener("wheel",function(e){if(document.activeElement!==cv)return;e.preventDefault();V.setSlice(V.i+(e.deltaY>0?1:-1))},{passive:false})})();
+function stopPlay(){st.playing=false;clearInterval(st.timer);ui.play.innerHTML='<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';ui.play.setAttribute("aria-label","Reproducir cortes")}
+ui.play.addEventListener("click",function(){if(st.playing){stopPlay();return}st.playing=true;ui.play.innerHTML='<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg>';ui.play.setAttribute("aria-label","Pausar");
+ st.timer=setInterval(function(){var n=V.c.n_tiles;V.setSlice((V.i+1)%n)},260)});
+window.addEventListener("resize",function(){drawProfile()});
+$("#ctaDemo").addEventListener("click",function(){setTimeout(function(){if(!st.analyzed&&!st.running)runAnalysis()},reduce?200:900)});
+
+buildCases();selectCase("10013").then(function(){watch(V,$("#vwr"))});
+
+/* ---------- misc: counters, reveal, tl, times ---------- */
+$("#t1").textContent=mmss(META.runtimes_s.gland);$("#t2").textContent=mmss(META.runtimes_s.zones);$("#t3").textContent=mmss(META.runtimes_s.cspca);
+if("IntersectionObserver" in window){var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add("in");
+  if(e.target.id==="tl")e.target.style.setProperty("--prog","30%");
+  Array.prototype.forEach.call(e.target.querySelectorAll("[data-count]"),countUp);io.unobserve(e.target)}})},{threshold:.18});
+ Array.prototype.forEach.call(document.querySelectorAll(".reveal"),function(el){io.observe(el)})}
+else{Array.prototype.forEach.call(document.querySelectorAll(".reveal"),function(el){el.classList.add("in")})}
+function countUp(el){var v=+el.dataset.count,d=+el.dataset.dec||0;if(reduce){el.textContent=fmt(v,d);return}tween(1400,function(k){el.textContent=fmt(v*k,d)})}
+(function(){var m=$("#mailto");if(m&&m.dataset.u){m.href="mailto:"+m.dataset.u+"@"+m.dataset.d+"?"+m.dataset.q.replace(/&amp;/g,"&")}})();
+requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>
