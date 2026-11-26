@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>PROSIS · Análisis de resonancia de próstata con IA</title>
+<title>PROSIS — Análisis de resonancia de próstata con IA</title>
 <meta name="description" content="PROSIS segmenta la próstata, marca focos sospechosos y entrega métricas reproducibles desde estudios DICOM. Prototipo de investigación de la Universidad de Valparaíso. Pruébalo en el demo.">
-<meta name="theme-color" content="#0B0B0F">
+<meta name="theme-color" content="#000000">
 <meta name="robots" content="noindex, nofollow">
 <meta property="og:type" content="website">
-<meta property="og:title" content="PROSIS · Resonancia de próstata, analizada con claridad">
+<meta property="og:title" content="PROSIS — Resonancia de próstata, analizada con claridad">
 <meta property="og:description" content="Demo interactivo con resultados reales: glándula, zonas y focos sospechosos sobre resonancia biparamétrica. Universidad de Valparaíso.">
 <meta property="og:image" content="https://marquita-oss.github.io/prostate-mri-demo/assets/og.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -23,7 +23,7 @@
 @font-face{font-family:"JetBrains Mono";src:url(assets/fonts/jetbrains-mono-latin-400-normal.woff2) format("woff2");font-weight:400;font-display:swap}
 @font-face{font-family:"JetBrains Mono";src:url(assets/fonts/jetbrains-mono-latin-500-normal.woff2) format("woff2");font-weight:500;font-display:swap}
 :root{
---ink:#0B0B0F;--ink-2:#15151A;--paper:#F3F3F5;--paper-2:#E8E8EC;--line:#D6D6DE;--muted:#6B6B76;--accent:#FF4DA6;--accent-ink:#B8005F;--coral:#E6007E;
+--ink:#000000;--ink-2:#0C0C0E;--paper:#F5F5F7;--paper-2:#A1A1A8;--line:#26262B;--muted:#7C7C84;--accent:#7FB3EE;--accent-ink:#4A90E2;--coral:#E6007E;
 --gland:#ECECF0;--pz:#35D0E8;--tz:#FFC247;--lesion:#E6007E;--ref:#9BE564;
 --f-display:"Fraunces",Georgia,"Times New Roman",serif;--f-text:"Source Sans 3",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;--f-mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
 --max:1120px;--r:18px;--ease:cubic-bezier(.2,.7,.2,1)
@@ -232,88 +232,260 @@ footer h4{font:600 12px var(--f-mono);letter-spacing:.1em;text-transform:upperca
 @media(max-width:860px){.foot-grid{grid-template-columns:1fr}}
 .qrbox{display:flex;gap:14px;align-items:center}
 .qrbox img{width:96px;height:96px;border-radius:8px;background:#fff;padding:4px}
+
+
+/* ===================== CAPA OSCURA DE PRODUCTO (v2) ===================== */
+:root{
+  --bg:#000; --surf:#0C0C0E; --surf2:#141417; --line2:#26262B;
+  --txt:#F5F5F7; --txt2:#A1A1A8; --mut2:#7C7C84;
+  --blue:#4A90E2; --blue-soft:#7FB3EE;
+  --c-gland:#ECECF0; --c-pz:#35D0E8; --c-tz:#FFC247; --c-les:#E6007E;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,"Helvetica Neue",Arial,sans-serif;
+  --mono2:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--txt);font-family:var(--sans);-webkit-font-smoothing:antialiased}
+body::before,body::after{display:none !important}
+h1,h2,h3,h4{font-family:var(--sans);letter-spacing:-.022em;color:var(--txt)}
+a{color:var(--blue-soft)}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+
+/* ---- barra superior ---- */
+.nav2{position:fixed;inset:0 0 auto 0;z-index:60;background:rgba(0,0,0,.72);backdrop-filter:saturate(180%) blur(20px);
+  -webkit-backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid rgba(255,255,255,.08)}
+.nav2 .wrap{display:flex;align-items:center;gap:26px;height:52px}
+.nav2 .mark{display:flex;align-items:center;gap:9px;font-weight:600;letter-spacing:.01em;color:#fff;text-decoration:none;font-size:16px}
+.nav2 .mark svg{width:19px;height:19px;color:#fff}
+.nav2 nav{margin-left:auto;display:flex;gap:26px;align-items:center}
+.nav2 nav a{color:var(--txt2);text-decoration:none;font-size:14px;transition:color .2s}
+.nav2 nav a:hover{color:#fff}
+.nav2 .cta{background:#fff;color:#000;border-radius:980px;padding:7px 15px;font-size:14px;font-weight:500}
+.nav2 .cta:hover{background:#e8e8ea;color:#000}
+@media(max-width:860px){.nav2 nav a.hide-s{display:none}}
+
+/* ---- héroe ---- */
+.hero2{position:relative;padding:136px 0 40px;text-align:center;overflow:hidden;background:#000}
+.hero2::after{content:"";position:absolute;left:50%;top:48%;width:1100px;height:620px;transform:translate(-50%,-50%);
+  background:radial-gradient(ellipse at center,rgba(74,144,226,.18),transparent 62%);pointer-events:none}
+.hero2 .in{position:relative;z-index:1}
+.eyebrow2{color:var(--blue);font-size:13px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;margin:0 0 20px}
+.hero2 h1{font-size:clamp(40px,6.4vw,78px);line-height:1.05;margin:0;font-weight:600}
+.hero2 h1 span{color:#6E6E73;display:block}
+.hero2 .lead2{max-width:640px;margin:26px auto 0;color:var(--txt2);font-size:clamp(17px,2vw,21px);line-height:1.5}
+.btn2{display:inline-flex;align-items:center;gap:8px;border-radius:980px;padding:13px 24px;font-size:16px;font-weight:500;
+  text-decoration:none;transition:transform .2s,background .2s;border:1px solid transparent}
+.btn2:hover{transform:translateY(-1px)}
+.btn2.solid{background:var(--blue);color:#fff}
+.btn2.solid:hover{background:#5d9ce8;color:#fff}
+.btn2.plain{color:var(--blue-soft);padding-left:10px}
+.hero2 .row{display:flex;gap:10px;justify-content:center;align-items:center;margin-top:30px;flex-wrap:wrap}
+.hero3d{position:relative;z-index:1;margin:34px auto 0;width:min(440px,78vw)}
+.hero3d img{width:100%;display:block;filter:drop-shadow(0 30px 70px rgba(74,144,226,.22))}
+.hero3d figcaption{color:var(--mut2);font-size:12.5px;margin-top:6px}
+
+/* ---- capítulos ---- */
+.chap{padding:96px 0;border-top:1px solid rgba(255,255,255,.07);background:var(--bg)}
+.chap.alt2{background:var(--surf)}
+.chap .grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:56px;align-items:center}
+.chap.flip .grid{direction:rtl}
+.chap.flip .grid>*{direction:ltr}
+.chap .num{color:var(--blue);font-size:13px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;margin:0 0 18px}
+.chap h2{font-size:clamp(30px,3.9vw,46px);line-height:1.1;margin:0;font-weight:600}
+.chap h2 small{display:block;color:#6E6E73;font-weight:600;font-size:1em}
+.chap p.body2{color:var(--txt2);font-size:17.5px;line-height:1.62;margin:20px 0 0;max-width:46ch}
+.chap .note2{color:var(--mut2);font-size:13.5px;margin-top:18px;max-width:46ch;line-height:1.5}
+@media(max-width:900px){.chap .grid{grid-template-columns:1fr;gap:34px}.chap.flip .grid{direction:ltr}}
+
+/* marco de equipo */
+.dev{position:relative;border-radius:16px;padding:9px 9px 0;background:linear-gradient(#3a3a3f,#232327);
+  box-shadow:0 30px 70px rgba(0,0,0,.65),0 0 0 1px rgba(255,255,255,.07)}
+.dev .screen{border-radius:9px;overflow:hidden;background:#000;position:relative}
+.dev .screen img{display:block;width:100%;height:auto}
+.dev .cam{position:absolute;top:4px;left:50%;width:5px;height:5px;border-radius:50%;background:#15151a;transform:translateX(-50%)}
+.dev .base{height:11px;margin:0 -22px;border-radius:0 0 12px 12px;background:linear-gradient(#2a2a2e,#1a1a1d);
+  box-shadow:0 10px 24px rgba(0,0,0,.6)}
+.dev .base::after{content:"";display:block;width:84px;height:4px;margin:0 auto;border-radius:0 0 6px 6px;background:#101013}
+
+/* leyenda de capas */
+.chips{list-style:none;margin:26px 0 0;padding:0;display:flex;flex-direction:column;gap:9px;max-width:330px}
+.chips li{display:flex;align-items:center;gap:11px;padding:9px 14px;border:1px solid var(--line2);border-radius:980px;
+  background:var(--surf2);font-size:14.5px;opacity:0;transform:translateY(8px);transition:opacity .5s,transform .5s}
+.in .chips li{opacity:1;transform:none}
+.in .chips li:nth-child(2){transition-delay:.12s}
+.in .chips li:nth-child(3){transition-delay:.24s}
+.in .chips li:nth-child(4){transition-delay:.36s}
+.chips i{width:13px;height:13px;border-radius:50%;flex:none}
+
+/* ---- números ---- */
+.nums{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:44px}
+.nums div{background:var(--surf2);border:1px solid var(--line2);border-radius:16px;padding:26px 22px}
+.nums b{display:block;font-size:40px;font-weight:600;letter-spacing:-.02em;color:#fff}
+.nums span{display:block;color:var(--txt2);font-size:14.5px;line-height:1.5;margin-top:8px}
+@media(max-width:820px){.nums{grid-template-columns:1fr}}
+.limits{margin:34px 0 0;padding:0;list-style:none;display:grid;gap:12px;max-width:760px}
+.limits li{color:var(--txt2);font-size:15px;line-height:1.55;padding-left:18px;position:relative}
+.limits li::before{content:"";position:absolute;left:0;top:9px;width:6px;height:6px;border-radius:50%;background:var(--blue)}
+
+/* ---- hoja de ruta ---- */
+.road{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:40px}
+.road div{border:1px solid var(--line2);border-radius:16px;padding:22px;background:var(--surf2)}
+.road h4{margin:0 0 8px;font-size:15px;color:#fff}
+.road p{margin:0;color:var(--txt2);font-size:14px;line-height:1.55}
+.road .when{color:var(--blue);font-size:12.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px}
+@media(max-width:900px){.road{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.road{grid-template-columns:1fr}}
+
+/* ---- entrada al hacer scroll ---- */
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1)}
+.reveal.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none}.hero3d img{animation:none}}
+
+/* ---- demo sobre fondo negro ---- */
+.sec.dark,.sec.light,.sec.alt{background:var(--bg) !important;color:var(--txt)}
+.sec{padding:96px 0;border-top:1px solid rgba(255,255,255,.07)}
+.sec h2{color:var(--txt)}
+.sec .lead{color:var(--txt2)}
+.sec .eyebrow{color:var(--blue)}
+.panel{background:var(--surf2) !important;border:1px solid var(--line2) !important;color:var(--txt)}
+.panel h3{color:#fff}
+.btn.accent{background:var(--blue) !important;color:#fff !important;border-color:var(--blue) !important}
+.btn.ghost{color:var(--txt) !important;border-color:var(--line2) !important}
+.cta-band{background:linear-gradient(140deg,#101016,#0A0A0C) !important;border:1px solid var(--line2);color:var(--txt)}
+.cta-band h2,.cta-band b{color:#fff}
+.cta-band p,.person span{color:var(--txt2)}
+footer{background:#000;border-top:1px solid rgba(255,255,255,.08)}
 </style>
 </head>
 <body>
-
-<header class="nav">
+<header class="nav2">
   <div class="wrap">
-    <a class="brand" href="#top" aria-label="PROSIS, inicio"><svg viewBox="0 0 64 64" fill="none" aria-hidden="true" ><path d="M60.0 32.0 L60.0 35.4 L59.8 37.6 L59.6 39.5 L59.3 41.1 L58.9 42.7 L58.5 44.1 L57.9 45.4 L57.3 46.6 L56.5 47.8 L55.7 48.8 L54.8 49.8 L53.9 50.7 L52.8 51.6 L51.6 52.3 L50.4 53.0 L49.1 53.7 L47.6 54.2 L46.1 54.7 L44.4 55.1 L42.7 55.4 L40.7 55.7 L38.5 55.9 L36.0 56.0 L32.0 56.0 L28.0 56.0 L25.5 55.9 L23.3 55.7 L21.3 55.4 L19.6 55.1 L17.9 54.7 L16.4 54.2 L14.9 53.7 L13.6 53.0 L12.4 52.3 L11.2 51.6 L10.1 50.7 L9.2 49.8 L8.3 48.8 L7.5 47.8 L6.7 46.6 L6.1 45.4 L5.5 44.1 L5.1 42.7 L4.7 41.1 L4.4 39.5 L4.2 37.6 L4.0 35.4 L4.0 32.0 L4.0 28.6 L4.2 26.4 L4.4 24.5 L4.7 22.9 L5.1 21.3 L5.5 19.9 L6.1 18.6 L6.7 17.4 L7.5 16.2 L8.3 15.2 L9.2 14.2 L10.1 13.3 L11.2 12.4 L12.4 11.7 L13.6 11.0 L14.9 10.3 L16.4 9.8 L17.9 9.3 L19.6 8.9 L21.3 8.6 L23.3 8.3 L25.5 8.1 L28.0 8.0 L32.0 8.0 L36.0 8.0 L38.5 8.1 L40.7 8.3 L42.7 8.6 L44.4 8.9 L46.1 9.3 L47.6 9.8 L49.1 10.3 L50.4 11.0 L51.6 11.7 L52.8 12.4 L53.9 13.3 L54.8 14.2 L55.7 15.2 L56.5 16.2 L57.3 17.4 L57.9 18.6 L58.5 19.9 L58.9 21.3 L59.3 22.9 L59.6 24.5 L59.8 26.4 L60.0 28.6 Z" stroke="currentColor" stroke-width="4.5" stroke-linejoin="round"/><path d="M48.5 29.0 L48.5 30.2 L48.4 31.2 L48.3 32.1 L48.1 32.9 L47.8 33.7 L47.5 34.4 L47.2 35.1 L46.8 35.7 L46.4 36.4 L45.9 36.9 L45.3 37.5 L44.7 38.0 L44.1 38.5 L43.4 38.9 L42.7 39.3 L41.9 39.6 L41.1 40.0 L40.2 40.2 L39.3 40.5 L38.4 40.7 L37.3 40.8 L36.2 40.9 L35.0 41.0 L33.5 41.0 L32.0 41.0 L30.8 40.9 L29.7 40.8 L28.6 40.7 L27.7 40.5 L26.8 40.2 L25.9 40.0 L25.1 39.6 L24.3 39.3 L23.6 38.9 L22.9 38.5 L22.3 38.0 L21.7 37.5 L21.1 36.9 L20.6 36.4 L20.2 35.7 L19.8 35.1 L19.5 34.4 L19.2 33.7 L18.9 32.9 L18.7 32.1 L18.6 31.2 L18.5 30.2 L18.5 29.0 L18.5 27.8 L18.6 26.8 L18.7 25.9 L18.9 25.1 L19.2 24.3 L19.5 23.6 L19.8 22.9 L20.2 22.3 L20.6 21.6 L21.1 21.1 L21.7 20.5 L22.3 20.0 L22.9 19.5 L23.6 19.1 L24.3 18.7 L25.1 18.4 L25.9 18.0 L26.8 17.8 L27.7 17.5 L28.6 17.3 L29.7 17.2 L30.8 17.1 L32.0 17.0 L33.5 17.0 L35.0 17.0 L36.2 17.1 L37.3 17.2 L38.4 17.3 L39.3 17.5 L40.2 17.8 L41.1 18.0 L41.9 18.4 L42.7 18.7 L43.4 19.1 L44.1 19.5 L44.7 20.0 L45.3 20.5 L45.9 21.1 L46.4 21.6 L46.8 22.3 L47.2 22.9 L47.5 23.6 L47.8 24.3 L48.1 25.1 L48.3 25.9 L48.4 26.8 L48.5 27.8 Z" stroke="var(--accent-ink)" stroke-width="3" stroke-linejoin="round"/><circle cx="44" cy="40" r="4.6" fill="var(--coral)"/></svg><span>PROSIS</span></a>
-    <ul>
-      <li><a href="#demo">Demo</a></li>
-      <li><a href="#como">Cómo funciona</a></li>
-      <li><a href="#evidencia">Evidencia</a></li>
-      <li><a href="#transferencia">Transferencia</a></li>
-    </ul>
-    <a class="btn accent" href="#contacto">Solicitar piloto</a>
+    <a class="mark" href="#top"><svg viewBox="0 0 64 64" fill="none" aria-hidden="true" ><path d="M60.0 32.0 L60.0 35.4 L59.8 37.6 L59.6 39.5 L59.3 41.1 L58.9 42.7 L58.5 44.1 L57.9 45.4 L57.3 46.6 L56.5 47.8 L55.7 48.8 L54.8 49.8 L53.9 50.7 L52.8 51.6 L51.6 52.3 L50.4 53.0 L49.1 53.7 L47.6 54.2 L46.1 54.7 L44.4 55.1 L42.7 55.4 L40.7 55.7 L38.5 55.9 L36.0 56.0 L32.0 56.0 L28.0 56.0 L25.5 55.9 L23.3 55.7 L21.3 55.4 L19.6 55.1 L17.9 54.7 L16.4 54.2 L14.9 53.7 L13.6 53.0 L12.4 52.3 L11.2 51.6 L10.1 50.7 L9.2 49.8 L8.3 48.8 L7.5 47.8 L6.7 46.6 L6.1 45.4 L5.5 44.1 L5.1 42.7 L4.7 41.1 L4.4 39.5 L4.2 37.6 L4.0 35.4 L4.0 32.0 L4.0 28.6 L4.2 26.4 L4.4 24.5 L4.7 22.9 L5.1 21.3 L5.5 19.9 L6.1 18.6 L6.7 17.4 L7.5 16.2 L8.3 15.2 L9.2 14.2 L10.1 13.3 L11.2 12.4 L12.4 11.7 L13.6 11.0 L14.9 10.3 L16.4 9.8 L17.9 9.3 L19.6 8.9 L21.3 8.6 L23.3 8.3 L25.5 8.1 L28.0 8.0 L32.0 8.0 L36.0 8.0 L38.5 8.1 L40.7 8.3 L42.7 8.6 L44.4 8.9 L46.1 9.3 L47.6 9.8 L49.1 10.3 L50.4 11.0 L51.6 11.7 L52.8 12.4 L53.9 13.3 L54.8 14.2 L55.7 15.2 L56.5 16.2 L57.3 17.4 L57.9 18.6 L58.5 19.9 L58.9 21.3 L59.3 22.9 L59.6 24.5 L59.8 26.4 L60.0 28.6 Z" stroke="currentColor" stroke-width="4.5" stroke-linejoin="round"/><path d="M48.5 29.0 L48.5 30.2 L48.4 31.2 L48.3 32.1 L48.1 32.9 L47.8 33.7 L47.5 34.4 L47.2 35.1 L46.8 35.7 L46.4 36.4 L45.9 36.9 L45.3 37.5 L44.7 38.0 L44.1 38.5 L43.4 38.9 L42.7 39.3 L41.9 39.6 L41.1 40.0 L40.2 40.2 L39.3 40.5 L38.4 40.7 L37.3 40.8 L36.2 40.9 L35.0 41.0 L33.5 41.0 L32.0 41.0 L30.8 40.9 L29.7 40.8 L28.6 40.7 L27.7 40.5 L26.8 40.2 L25.9 40.0 L25.1 39.6 L24.3 39.3 L23.6 38.9 L22.9 38.5 L22.3 38.0 L21.7 37.5 L21.1 36.9 L20.6 36.4 L20.2 35.7 L19.8 35.1 L19.5 34.4 L19.2 33.7 L18.9 32.9 L18.7 32.1 L18.6 31.2 L18.5 30.2 L18.5 29.0 L18.5 27.8 L18.6 26.8 L18.7 25.9 L18.9 25.1 L19.2 24.3 L19.5 23.6 L19.8 22.9 L20.2 22.3 L20.6 21.6 L21.1 21.1 L21.7 20.5 L22.3 20.0 L22.9 19.5 L23.6 19.1 L24.3 18.7 L25.1 18.4 L25.9 18.0 L26.8 17.8 L27.7 17.5 L28.6 17.3 L29.7 17.2 L30.8 17.1 L32.0 17.0 L33.5 17.0 L35.0 17.0 L36.2 17.1 L37.3 17.2 L38.4 17.3 L39.3 17.5 L40.2 17.8 L41.1 18.0 L41.9 18.4 L42.7 18.7 L43.4 19.1 L44.1 19.5 L44.7 20.0 L45.3 20.5 L45.9 21.1 L46.4 21.6 L46.8 22.3 L47.2 22.9 L47.5 23.6 L47.8 24.3 L48.1 25.1 L48.3 25.9 L48.4 26.8 L48.5 27.8 Z" stroke="var(--accent-ink)" stroke-width="3" stroke-linejoin="round"/><circle cx="44" cy="40" r="4.6" fill="var(--coral)"/></svg>PROSIS</a>
+    <nav>
+      <a href="#revision" class="hide-s">Producto</a>
+      <a href="#demo">Demo</a>
+      <a href="#evidencia" class="hide-s">Evidencia</a>
+      <a href="#proyecto" class="hide-s">Proyecto</a>
+      <a class="cta" href="#contacto">Contacto</a>
+    </nav>
   </div>
 </header>
-
-<main id="top">
-<!-- HERO -->
-<section class="hero">
-  <div class="wrap hero-grid">
-    <div>
-      <p class="eyebrow">Software médico con IA · Valparaíso, Chile · en desarrollo</p>
-      <h1>La resonancia de próstata, analizada <em>en minutos</em> y medida siempre igual.</h1>
-      <p class="lead">PROSIS delimita la próstata y sus zonas, marca focos sospechosos y entrega volúmenes reproducibles a partir de estudios DICOM de cualquier fabricante. Un prototipo de la Universidad de Valparaíso, diseñado desde el inicio para convertirse en software médico certificable.</p>
-      <div class="cta-row">
-        <a class="btn accent" href="#demo" id="ctaDemo"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>Probar el demo</a>
-        <a class="btn ghost" href="#contacto">Solicitar piloto</a>
-      </div>
-      <ul class="badges">
-        <li>Universidad de Valparaíso</li><li>iHEALTH</li><li>Proyecto VIU 2026</li><li>TRL 3 → 4</li><li class="warn">Prototipo sin certificar</li>
-      </ul>
+<main>
+<section class="hero2" id="top">
+  <div class="wrap in">
+    <p class="eyebrow2">Resonancia multiparamétrica de próstata</p>
+    <h1>Delimita la próstata.<span>Ubica lo sospechoso.</span></h1>
+    <p class="lead2">Contornos de la glándula, de sus zonas y de los focos candidatos sobre el estudio del propio servicio. El radiólogo revisa, corrige y decide.</p>
+    <div class="row">
+      <a class="btn2 solid" href="#demo">Probar el demo</a>
+      <a class="btn2 plain" href="#revision">Ver cómo funciona &rsaquo;</a>
     </div>
-    <figure style="margin:0" aria-label="Animación: cortes de una resonancia con contornos de próstata detectados">
-      <div class="vwr" id="heroV">
-        <canvas id="heroC" width="640" height="640" role="img" aria-label="Cortes axiales de una resonancia T2 de próstata con la glándula, las zonas y un foco sospechoso delineados por el sistema"></canvas>
-        <div class="hud tl" id="heroTl">Axial · T2W</div>
-        <div class="hud tr" id="heroTr"></div>
-        <div class="hud bl"><span id="heroLabel"></span></div>
-      </div>
-      <figcaption class="hero-cap">Caso público PI-CAI 10013 · contornos reales generados por los modelos del proyecto. Resultado de investigación, no diagnóstico.</figcaption>
+    <figure class="hero3d">
+      <img src="assets/shots/prostate3d.webp" alt="Reconstrucción tridimensional de la glándula con el foco sospechoso en su interior, girando" width="660" height="660">
+      <figcaption>Reconstrucción de las máscaras del caso 10013, generadas por los modelos del proyecto.</figcaption>
     </figure>
   </div>
 </section>
 
-<!-- PROBLEMA -->
-<section class="sec light" id="problema">
+<section class="chap" id="revision">
   <div class="wrap">
-    <div class="sec-head reveal">
-      <p class="eyebrow">El problema</p>
-      <h2>Una resonancia bien hecha no basta si leerla depende de quién la mire.</h2>
-      <p class="lead">La resonancia biparamétrica es el estándar para detectar cáncer de próstata. Pero analizarla toma tiempo, exige expertise concentrado en pocos centros y produce lecturas que cambian entre especialistas.</p>
-    </div>
-    <div class="keys reveal">
-      <div class="key"><b class="num" data-count="9678" data-dec="0">9.678</b><span>casos nuevos de cáncer de próstata en Chile en 2022 <sup><a href="#r1">1</a></sup></span></div>
-      <div class="key"><b>20–30 <small>min</small></b><span>por estudio de resonancia biparamétrica en práctica clínica estándar</span></div>
-      <div class="key"><b class="num">55 % <small>vs 84 %</small></b><span>especificidad de lectores con menos frente a más experiencia <sup><a href="#r2">2</a></sup></span></div>
-      <div class="key"><b class="num">κ 0,22–0,51</b><span>acuerdo entre lectores al asignar categorías PI-RADS v2 <sup><a href="#r3">3</a></sup></span></div>
+    <div class="grid">
+      <div class="reveal">
+        <p class="num">01  Revisión</p>
+        <h2>Cuatro contornos <small>sobre tu propio estudio.</small></h2>
+        <p class="body2">El programa delimita la glándula completa, la zona periférica, la zona de transición y el foco sospechoso. Cada estructura va en su propia capa: se enciende, se apaga y se corrige a mano.</p>
+        <ul class="chips">
+          <li><i style="background:var(--c-gland)"></i>Glándula completa</li>
+          <li><i style="background:var(--c-pz)"></i>Zona periférica</li>
+          <li><i style="background:var(--c-tz)"></i>Zona de transición</li>
+          <li><i style="background:var(--c-les)"></i>Foco sospechoso</li>
+        </ul>
+        <p class="note2">Caso 10013 del conjunto público PI-CAI. Captura del programa en ejecución.</p>
+      </div>
+      <div class="reveal">
+        <figure class="dev" style="margin:0">
+          <div class="screen"><span class="cam"></span><img src="assets/shots/contornos.jpg" alt="Ventana del programa con los contornos sobre una imagen T2W" loading="lazy" width="1600" height="1000"></div>
+          <div class="base"></div>
+        </figure>
+      </div>
     </div>
   </div>
 </section>
-
-<!-- COMO FUNCIONA -->
-<section class="sec alt" id="como">
+<section class="chap flip alt2" id="multiparametrico">
   <div class="wrap">
-    <div class="sec-head reveal">
-      <p class="eyebrow">Cómo funciona</p>
-      <h2>Del estudio DICOM a métricas que puedes auditar, en cuatro pasos.</h2>
+    <div class="grid">
+      <div class="reveal">
+        <p class="num">02  Multiparamétrico</p>
+        <h2>Las secuencias <small>sincronizadas.</small></h2>
+        <p class="body2">T2W, ADC, alto-b y la vista sagital en una sola pantalla, con los cortes alineados. Los contornos se calculan sobre T2W y se remuestrean a la malla de cada secuencia, y el programa lo deja escrito en pantalla.</p>
+        
+        <p class="note2">El rótulo naranja de cada panel indica que el contorno viene remuestreado desde T2W.</p>
+      </div>
+      <div class="reveal">
+        <figure class="dev" style="margin:0">
+          <div class="screen"><span class="cam"></span><img src="assets/shots/multiparametrico.jpg" alt="Vista de cuatro paneles con T2W, ADC, alto-b y sagital" loading="lazy" width="1600" height="1000"></div>
+          <div class="base"></div>
+        </figure>
+      </div>
     </div>
-    <ol class="steps">
-      <li class="step reveal"><svg viewBox="0 0 64 64" fill="none" stroke="var(--ink)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path class="draw" style="--len:190" d="M10 22h14l4 5h26v22H10z"/><path class="draw" style="--len:60" d="M32 34v10m-5-5 5 5 5-5"/><circle class="pop" cx="50" cy="16" r="5" fill="var(--coral)" stroke="none"/></svg>
-        <h3>Abre el estudio</h3><p>Carga DICOM de cualquier fabricante, o MHA y NIfTI. Las secuencias T2W, ADC y alto-b se identifican solas.</p></li>
-      <li class="step reveal"><svg viewBox="0 0 64 64" fill="none" stroke="var(--ink)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path class="draw" style="--len:170" d="M32 10c14 0 22 8 22 20 0 13-9 24-22 24S10 43 10 30c0-12 8-20 22-20z"/><path class="draw" style="--len:110" d="M32 20c8 0 12 5 12 11s-5 12-12 12-12-6-12-12 4-11 12-11z" stroke="var(--accent-ink)"/></svg>
-        <h3>Segmenta</h3><p>Modelos nnU-Net delinean la glándula y sus zonas periférica y de transición, corte a corte.</p></li>
-      <li class="step reveal"><svg viewBox="0 0 64 64" fill="none" stroke="var(--ink)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path class="draw" style="--len:170" d="M32 10c14 0 22 8 22 20 0 13-9 24-22 24S10 43 10 30c0-12 8-20 22-20z"/><circle class="pop" cx="40" cy="38" r="6" fill="var(--coral)" stroke="none"/><path class="draw" style="--len:50" d="M10 56h44M16 56v-4m8 4v-3m8 3v-4m8 4v-3m8 3v-4"/></svg>
-        <h3>Detecta y mide</h3><p>Marca focos sospechosos y calcula volúmenes y diámetros, con el mismo criterio sin importar el operador.</p></li>
-      <li class="step reveal"><svg viewBox="0 0 64 64" fill="none" stroke="var(--ink)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path class="draw" style="--len:150" d="M18 8h22l8 8v40H18z"/><path class="draw" style="--len:60" d="M40 8v8h8M24 30h20M24 38h20M24 46h12"/><path class="pop" d="m40 46 4 4 8-9" stroke="var(--coral)"/></svg>
-        <h3>Revisa y exporta</h3><p>Edita a mano si hace falta, exporta DICOM SEG y deja un registro de auditoría verificable de cada análisis.</p></li>
-    </ol>
   </div>
 </section>
-
+<section class="chap" id="fusion">
+  <div class="wrap">
+    <div class="grid">
+      <div class="reveal">
+        <p class="num">03  Fusión</p>
+        <h2>El mapa ADC <small>sobre la anatomía.</small></h2>
+        <p class="body2">La fusión superpone el coeficiente de difusión sobre la imagen T2W, con su escala en µm²/s y la indicación de concordancia con alto-b. Es la vista que hace visible lo que una secuencia sola no muestra.</p>
+        
+        <p class="note2">Ventana de próstata por defecto. La escala y la leyenda las dibuja el programa.</p>
+      </div>
+      <div class="reveal">
+        <figure class="dev" style="margin:0">
+          <div class="screen"><span class="cam"></span><img src="assets/shots/fusion.jpg" alt="Imagen T2W con el mapa ADC superpuesto y su barra de color" loading="lazy" width="1600" height="1000"></div>
+          <div class="base"></div>
+        </figure>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="chap flip alt2" id="medicion">
+  <div class="wrap">
+    <div class="grid">
+      <div class="reveal">
+        <p class="num">04  Medición</p>
+        <h2>Volúmenes y métricas, <small>listos para exportar.</small></h2>
+        <p class="body2">Volumen de la glándula y de cada zona, tamaño del foco y métricas de intensidad por corte. Todo se exporta a CSV o PDF, y las herramientas de distancia, ángulo y región de interés quedan a un clic.</p>
+        
+        <p class="note2">El análisis se ejecuta solo al cargar el estudio.</p>
+      </div>
+      <div class="reveal">
+        <figure class="dev" style="margin:0">
+          <div class="screen"><span class="cam"></span><img src="assets/shots/medicion.jpg" alt="Panel de análisis cuantitativo con tabla de métricas y botones de exportación" loading="lazy" width="1600" height="1000"></div>
+          <div class="base"></div>
+        </figure>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="chap" id="modelos">
+  <div class="wrap">
+    <div class="grid">
+      <div class="reveal">
+        <p class="num">05  Modelos</p>
+        <h2>Los modelos corren <small>en tu propio equipo.</small></h2>
+        <p class="body2">Tres modelos nnU-Net: glándula, zonas y detección de cáncer clínicamente significativo, cada uno con su requisito de secuencias. Las imágenes no salen del computador del servicio, y cada resultado queda marcado como no certificado.</p>
+        
+        <p class="note2">El aviso UNCERTIFIED es parte del programa, no un rótulo de esta página.</p>
+      </div>
+      <div class="reveal">
+        <figure class="dev" style="margin:0">
+          <div class="screen"><span class="cam"></span><img src="assets/shots/modelos.jpg" alt="Panel de análisis con los tres modelos y el aviso de modelos no certificados" loading="lazy" width="1600" height="1000"></div>
+          <div class="base"></div>
+        </figure>
+      </div>
+    </div>
+  </div>
+</section>
 <!-- DEMO -->
 <section class="sec dark demo" id="demo">
   <div class="wrap">
@@ -326,7 +498,7 @@ footer h4{font:600 12px var(--f-mono);letter-spacing:.1em;text-transform:upperca
       <div>
         <div class="vwr" id="vwr">
           <canvas id="cv" width="800" height="800" tabindex="0" role="img" aria-label="Visor de resonancia con capas de segmentación. Usa las flechas del teclado para cambiar de corte."></canvas>
-          <div class="hud tl" id="hTl">Axial · T2W</div>
+          <div class="hud tl" id="hTl">Axial, T2W</div>
           <div class="hud tr" id="hTr">—</div>
           <div class="hud bl"><div id="hBl"></div><div class="scale"><i id="scaleBar" style="width:11.1%"></i><span>10 mm</span></div></div>
           <div class="hud br" id="hBr"></div>
@@ -342,7 +514,7 @@ footer h4{font:600 12px var(--f-mono);letter-spacing:.1em;text-transform:upperca
 
       <div>
         <div class="panel">
-          <h3>1 · Elige un estudio</h3>
+          <h3>1. Elige un estudio</h3>
           <div class="cases" id="cases"></div>
           <div class="run-row">
             <button class="btn accent pulse" id="run"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>Analizar estudio</button>
@@ -353,7 +525,7 @@ footer h4{font:600 12px var(--f-mono);letter-spacing:.1em;text-transform:upperca
         </div>
 
         <div class="panel metrics-wrap" id="results" style="margin-top:14px">
-          <h3>2 · Resultado</h3>
+          <h3>2. Resultado</h3>
           <div class="tabs" role="group" aria-label="Secuencia"><button data-seq="t2w" aria-pressed="true">T2W</button><button data-seq="adc" aria-pressed="false">ADC</button><button data-seq="hbv" aria-pressed="false">Alto-b</button></div>
           <ul class="layers off" id="layers"></ul>
           <div class="metrics" id="metrics" style="margin-top:14px"></div>
@@ -366,121 +538,42 @@ footer h4{font:600 12px var(--f-mono);letter-spacing:.1em;text-transform:upperca
   </div>
 </section>
 
-<!-- DIFERENCIAL -->
-<section class="sec light" id="diferencial">
+
+<section class="sec" id="evidencia">
   <div class="wrap">
     <div class="sec-head reveal">
-      <p class="eyebrow">Por qué es distinto</p>
-      <h2>Lo que existe es potente en algo, pero no resuelve todo junto.</h2>
-      <p class="lead">Las herramientas de investigación no están hechas para una sala de radiología, y las comerciales no están pensadas para la red pública chilena. PROSIS busca integrar segmentación, medición y trazabilidad en un solo producto específico de próstata.</p>
+      <p class="eyebrow">Evidencia y límites</p>
+      <h2>Lo que está medido, y lo que todavía no.</h2>
+      <p class="lead">Preferimos mostrar los números con sus condiciones antes que una promesa redonda.</p>
     </div>
-    <div class="tbl-wrap reveal"><table>
-      <thead><tr><th></th><th>Plataformas generales<br>(p. ej. 3D Slicer)</th><th>Algoritmos de desafíos<br>(p. ej. PI-CAI)</th><th>Soluciones comerciales</th><th class="us">PROSIS</th></tr></thead>
-      <tbody>
-        <tr><th>Específico de próstata</th><td><span class="v part">◐</span><span class="n">Herramienta general</span></td><td><span class="v yes">✓</span><span class="n">Solo el algoritmo</span></td><td><span class="v part">◐</span><span class="n">Varía por producto</span></td><td class="us"><span class="v yes">✓</span><span class="n">Segmentación + zonas + focos</span></td></tr>
-        <tr><th>Interfaz clínica lista para usar</th><td><span class="v part">◐</span><span class="n">Orientada a investigación</span></td><td><span class="v no">—</span><span class="n">Código de investigación</span></td><td><span class="v yes">✓</span></td><td class="us"><span class="v yes">✓</span><span class="n">Prototipo funcional</span></td></tr>
-        <tr><th>Cualquier fabricante vía DICOM</th><td><span class="v yes">✓</span></td><td><span class="v no">—</span></td><td><span class="v part">◐</span><span class="n">Suele atarse a un ecosistema</span></td><td class="us"><span class="v yes">✓</span><span class="n">Probado en Siemens, Philips y GE (n = 1 cada uno)</span></td></tr>
-        <tr><th>Diseñado para certificación de software médico</th><td><span class="v no">—</span></td><td><span class="v no">—</span></td><td><span class="v yes">✓</span></td><td class="us"><span class="v part">◐</span><span class="n">En camino (IEC 62304 / ISO 13485)</span></td></tr>
-        <tr><th>Pensado para la red pública chilena</th><td><span class="v no">—</span></td><td><span class="v no">—</span></td><td><span class="v part">◐</span><span class="n">Sin presencia documentada en FONASA</span></td><td class="us"><span class="v yes">✓</span><span class="n">Objetivo del proyecto</span></td></tr>
-      </tbody></table></div>
-    <p style="font-size:14px;color:var(--muted);margin-top:12px">Comparación basada en el análisis del proyecto VIU; no es una evaluación exhaustiva de cada producto.</p>
+    <div class="nums reveal">
+      <div><b>0,90</b><span>Dice en segmentación de glándula de la plataforma base, valor publicado en la literatura del proyecto.</span></div>
+      <div><b>108</b><span>Pruebas de mutación superadas en los módulos de modelos, exportación DICOM, trazabilidad y falla visible.</span></div>
+      <div><b>≤0,001 mm</b><span>Error de geometría al exportar máscaras, corregido desde errores de 21 a 362 mm detectados en la verificación.</span></div>
+    </div>
+    <ul class="limits reveal">
+      <li>Prototipo de investigación sin certificar. No es un dispositivo médico y no sirve para decidir sobre un paciente.</li>
+      <li>En un notebook de 8 GB sin tarjeta gráfica, el estudio completo tardó 33 min 29 s: 4 min 47 s la glándula, 4 min 58 s las zonas y 23 min 44 s la detección con sus tres pliegues.</li>
+      <li>La prueba con equipos de otros fabricantes se hizo con un estudio por fabricante. En uno de ellos la segmentación de glándula falló y las zonas no se recuperaron.</li>
+      <li>Los casos del demo formaron parte del entrenamiento de los modelos, así que ilustran el flujo y no miden desempeño.</li>
+    </ul>
   </div>
 </section>
-
-<!-- SOFTWARE MEDICO -->
-<section class="sec dark" id="evidencia">
+<section class="sec" id="proyecto">
   <div class="wrap">
     <div class="sec-head reveal">
-      <p class="eyebrow">Software médico desde el diseño</p>
-      <h2>No es solo un modelo que funciona: es ingeniería que se puede auditar.</h2>
-      <p class="lead">Cada decisión se verifica con pruebas que intentan romperla. Estas son cifras medidas en los registros de verificación del proyecto.</p>
+      <p class="eyebrow">Proyecto y transferencia</p>
+      <h2>De la tesis al servicio de imagenología.</h2>
+      <p class="lead">El programa nace de una plataforma de código abierto desarrollada en la Universidad de Valparaíso. El paso siguiente es llevarlo a un centro real, con su propio equipo de resonancia.</p>
     </div>
-    <div class="grid3">
-      <div class="card reveal"><span class="tag">Geometría</span><div class="big">21–362 <small>mm → ≤ 0,001 mm</small></div><h3>Máscaras en su lugar</h3><p>Una auditoría halló máscaras exportadas desplazadas entre 21 y 362 mm respecto de la imagen. Tras la corrección, la desviación medida es de 0,001 mm o menos en series PI-CAI, GE, Siemens y Philips.</p></div>
-      <div class="card reveal"><span class="tag">Pruebas</span><div class="big">27/27 <small>defectos detectados</small></div><h3>Pruebas que prueban a las pruebas</h3><p>Se reintroducen defectos a propósito para comprobar que las pruebas los detectan: 27 de 27 en el módulo de IA, 30 de 30 en exportación DICOM SEG y 30 de 30 en trazabilidad.</p></div>
-      <div class="card reveal"><span class="tag">Trazabilidad</span><div class="big">SHA-256</div><h3>Cada análisis deja huella</h3><p>El registro de auditoría guarda el modelo (con su huella), las secuencias de entrada y los parámetros, en una cadena verificable.</p></div>
-      <div class="card reveal"><span class="tag">Honestidad</span><div class="big">UNCERTIFIED</div><h3>Nada se presenta como validado</h3><p>Todo resultado de un modelo sin certificar se marca como tal en pantalla y en el registro, hasta que el modelo esté en el registro de modelos certificados.</p></div>
-      <div class="card reveal"><span class="tag">Interoperabilidad</span><div class="big">DICOM SEG</div><h3>Habla el idioma del hospital</h3><p>Exporta segmentaciones como objetos DICOM Segmentation y verifica su geometría contra el estudio de origen. Preparado para integrarse con PACS.</p></div>
-      <div class="card reveal"><span class="tag">Fallar a la vista</span><div class="big">21/21</div><h3>Sin fallos silenciosos</h3><p>Las configuraciones inseguras se avisan al arrancar en lugar de caer en silencio; 21 de 21 defectos introducidos a propósito fueron detectados.</p></div>
-    </div>
-    <p style="margin-top:22px;font-size:15px;color:#9DB0A2" class="reveal">Marco de trabajo: ISO 13485 · IEC 62304 · ISO 14971 · IMDRF SaMD. La certificación ante el ISP y CERTE-MED es una etapa posterior del proyecto.</p>
-  </div>
-</section>
-
-<!-- ESTADO -->
-<section class="sec light" id="estado">
-  <div class="wrap">
-    <div class="sec-head reveal">
-      <p class="eyebrow">Transparencia</p>
-      <h2>Dónde estamos hoy, sin maquillaje.</h2>
-      <p class="lead">Un proyecto de transferencia tecnológica se evalúa por lo que muestra y por lo que reconoce que le falta. Esto es lo que medimos.</p>
-    </div>
-    <div class="grid2">
-      <div class="card reveal">
-        <span class="tag">Resultado publicado</span>
-        <h3>Plataforma base (DeepProstate)</h3>
-        <p style="margin-bottom:12px">Dice sobre PI-CAI, publicado en IEEE-ICPRS 2025.</p>
-        <table class="mini"><tbody>
-          <tr><th>Glándula completa</th><td class="num"><b>0,90</b></td></tr>
-          <tr><th>Zonas anatómicas</th><td class="num"><b>0,88</b></td></tr>
-          <tr><th>Cáncer clínicamente significativo</th><td class="num"><b>0,60</b></td></tr>
-        </tbody></table>
-      </div>
-      <div class="card reveal">
-        <span class="tag">Validación externa inicial · provisoria</span>
-        <h3>Modelo de glándula en tres fabricantes</h3>
-        <p style="margin-bottom:12px">Un estudio por fabricante: no es una estimación de desempeño.</p>
-        <table class="mini"><tbody>
-          <tr><th>Siemens 3T</th><td class="num"><b>0,95</b></td></tr>
-          <tr><th>Philips 3T</th><td class="num"><b>0,89</b></td></tr>
-          <tr><th>GE 3T (bobina endorrectal)</th><td class="num"><b style="color:#A03030">0,60</b></td></tr>
-        </tbody></table>
-        <p style="margin:12px 0 0;font-size:14.5px">Esa brecha es justo lo que el proyecto busca cerrar con validación en más centros.</p>
-      </div>
-      <div class="card reveal">
-        <span class="tag">Velocidad</span>
-        <h3>Meta: menos de 10 minutos por estudio</h3>
-        <p style="margin-bottom:12px">Tiempos medidos hoy en un notebook de 8 GB, sin GPU:</p>
-        <table class="mini"><tbody>
-          <tr><th>Glándula</th><td class="num" id="t1"></td></tr>
-          <tr><th>Zonas PZ/TZ</th><td class="num" id="t2"></td></tr>
-          <tr><th>Focos sospechosos (3 pliegues)</th><td class="num" id="t3"></td></tr>
-        </tbody></table>
-        <p style="margin:12px 0 0;font-size:14.5px">La meta exige GPU y optimización. Todavía no está medida.</p>
-      </div>
-      <div class="card reveal">
-        <span class="tag">Madurez</span>
-        <h3>TRL 3 hoy, TRL 4 como meta</h3>
-        <p>Pasar de componentes validados por separado a un sistema integrado, auditado y documentado. Aún sin validación clínica formal ni certificación.</p>
-        <details><summary>¿Qué datos usa el demo?</summary><p>Cuatro estudios públicos del conjunto PI-CAI (CC BY-NC 4.0). Las imágenes son recortes de esos estudios; las superposiciones son salidas de los modelos del proyecto.</p></details>
-      </div>
+    <div class="road reveal">
+      <div><p class="when">Hoy</p><h4>Prototipo verificado</h4><p>Modelos ejecutados de extremo a extremo sobre estudios públicos, con registro de cada corrida y exportación auditable.</p></div>
+      <div><p class="when">2026</p><h4>Piloto clínico</h4><p>Instalación en uno o dos servicios, con estudios propios del centro y medición del tiempo real de lectura.</p></div>
+      <div><p class="when">Después</p><h4>Expediente regulatorio</h4><p>Gestión de riesgos, ciclo de vida del software y sistema de calidad, en la ruta de un dispositivo médico de software.</p></div>
+      <div><p class="when">Meta</p><h4>Licencia anual</h4><p>Modelo de licencia por centro, con protección por derechos de autor, estudio de patentabilidad y registro de marca.</p></div>
     </div>
   </div>
 </section>
-
-<!-- TRANSFERENCIA -->
-<section class="sec dark" id="transferencia">
-  <div class="wrap">
-    <div class="sec-head reveal">
-      <p class="eyebrow">Transferencia tecnológica</p>
-      <h2>De una tesis de magíster a un producto para el sistema de salud.</h2>
-    </div>
-    <ol class="tl reveal" id="tl">
-      <li class="done"><em>Hecho</em><b>Tesis de magíster</b>DeepProstate, plataforma abierta publicada en IEEE-ICPRS 2025. TRL 3.</li>
-      <li class="now"><em>En curso</em><b>Proyecto VIU 2026</b>Sistema integrado, auditado y documentado. Propiedad intelectual y validación de mercado. Meta TRL 4.</li>
-      <li><em>Siguiente</em><b>Validación clínica</b>Con hospitales de la región y la red de la Universidad de Valparaíso.</li>
-      <li><em>Después</em><b>Certificación</b>Clasificación SaMD con el ISP y CERTE-MED.</li>
-      <li><em>Horizonte</em><b>Expansión</b>FDA, Unión Europea y Latinoamérica.</li>
-    </ol>
-    <div class="grid3" style="margin-top:44px">
-      <div class="card reveal"><span class="tag">Mercado inicial · Chile</span><div class="big">60–75 <small>centros</small></div><p>25–30 establecimientos de la red pública FONASA y 35–45 centros privados de imagenología con resonador compatible. Hipótesis del proyecto.</p></div>
-      <div class="card reveal"><span class="tag">Modelo</span><div class="big">Licencia <small>anual</small></div><p>Por centro, con actualizaciones de los modelos de IA y soporte. La hipótesis de precio está en validación con adoptantes tempranos.</p></div>
-      <div class="card reveal"><span class="tag">Protección</span><div class="big">3 <small>ejes</small></div><p>Derechos de autor del software, evaluación de patentabilidad como invención implementada por computador y registro de marca ante INAPI.</p></div>
-    </div>
-  </div>
-</section>
-
-<!-- CONTACTO -->
 <section class="sec light" id="contacto">
   <div class="wrap">
     <div class="cta-band reveal">
@@ -494,8 +587,8 @@ footer h4{font:600 12px var(--f-mono);letter-spacing:.1em;text-transform:upperca
         </div>
       </div>
       <div class="people">
-        <div class="person"><b>Ronald Marca</b><span>Director del proyecto · Magíster en Ciencias de la Ingeniería, mención Ingeniería Biomédica, Universidad de Valparaíso</span></div>
-        <div class="person"><b>Dr. Rodrigo Salas Fuentes</b><span>Profesor guía · Facultad de Ingeniería, Universidad de Valparaíso</span></div>
+        <div class="person"><b>Ronald Marca</b><span>Director del proyecto. Magíster en Ciencias de la Ingeniería, mención Ingeniería Biomédica, Universidad de Valparaíso</span></div>
+        <div class="person"><b>Dr. Rodrigo Salas Fuentes</b><span>Profesor guía. Facultad de Ingeniería, Universidad de Valparaíso</span></div>
       </div>
     </div>
   </div>
@@ -508,7 +601,7 @@ footer h4{font:600 12px var(--f-mono);letter-spacing:.1em;text-transform:upperca
       <div>
         <h4>Aviso importante</h4>
         <p>PROSIS es un <b style="color:#fff">prototipo de investigación en desarrollo</b>. No es un dispositivo médico certificado y no debe usarse para diagnóstico ni para decisiones clínicas. Los resultados del demo son ilustrativos.</p>
-        <p style="margin-top:14px"><b style="color:#fff">PROSIS</b> · Prostate Oncology Segmentation and Imaging System<br>Universidad de Valparaíso · iHEALTH · Proyecto VIU 2026</p>
+        <p style="margin-top:14px"><b style="color:#fff">PROSIS</b> — Prostate Oncology Segmentation and Imaging System<br>Universidad de Valparaíso, iHEALTH, Proyecto VIU 2026</p>
       </div>
       <div>
         <h4>Datos del demo</h4>
@@ -528,7 +621,6 @@ footer h4{font:600 12px var(--f-mono);letter-spacing:.1em;text-transform:upperca
     <p class="legal">© 2026 Proyecto PROSIS, Universidad de Valparaíso. Tipografías Fraunces, Source Sans 3 y JetBrains Mono bajo licencia SIL OFL.</p>
   </div>
 </footer>
-
 <script src="assets/cases.js"></script>
 <script>
 (function(){
@@ -567,7 +659,7 @@ Viewer.prototype.draw=function(t){var c=this.c;if(!c||!this.img)return;var ctx=t
   if(rev<1&&rev>0){ctx.save();var g=ctx.createLinearGradient(0,W*rev-14*s,0,W*rev+2);g.addColorStop(0,"rgba(255,255,255,0)");g.addColorStop(1,COL[L]);ctx.fillStyle=g;ctx.fillRect(0,W*rev-14*s,W,16*s);ctx.restore()}
   if(L==="lesion"&&rev>=1){var cx=0,cy=0,n=0;polys.forEach(function(p){for(var m=0;m<p.length;m+=2){cx+=p[m];cy+=p[m+1];n++}});cx=cx/n*k;cy=cy/n*k;
    if(!reduce){var ph=((t||0)%1600)/1600;ctx.save();ctx.globalAlpha=(1-ph)*.9*a;ctx.strokeStyle="#FF4DA6";ctx.lineWidth=2*s;ctx.beginPath();ctx.arc(cx,cy,(12+ph*26)*s,0,6.2832);ctx.stroke();ctx.restore()}
-   var les=c.lesions&&c.lesions[0];if(les&&a>0.5){var txt="Foco sospechoso · "+fmt(les.ml,2)+" mL";ctx.save();ctx.font="600 "+(13*s)+"px 'Source Sans 3',system-ui,sans-serif";var tw=ctx.measureText(txt).width+14*s,bx=Math.min(W-tw-8*s,Math.max(8*s,cx+16*s)),by=Math.max(30*s,cy-34*s);ctx.fillStyle="rgba(20,38,30,.88)";ctx.strokeStyle=COL.lesion;ctx.lineWidth=1.4*s;ctx.beginPath();(ctx.roundRect?ctx.roundRect(bx,by,tw,22*s,11*s):ctx.rect(bx,by,tw,22*s));ctx.fill();ctx.stroke();ctx.fillStyle="#fff";ctx.fillText(txt,bx+7*s,by+15.5*s);ctx.restore()}}
+   var les=c.lesions&&c.lesions[0];if(les&&a>0.5){var txt="Foco sospechoso, "+fmt(les.ml,2)+" mL";ctx.save();ctx.font="600 "+(13*s)+"px 'Source Sans 3',system-ui,sans-serif";var tw=ctx.measureText(txt).width+14*s,bx=Math.min(W-tw-8*s,Math.max(8*s,cx+16*s)),by=Math.max(30*s,cy-34*s);ctx.fillStyle="rgba(20,38,30,.88)";ctx.strokeStyle=COL.lesion;ctx.lineWidth=1.4*s;ctx.beginPath();(ctx.roundRect?ctx.roundRect(bx,by,tw,22*s,11*s):ctx.rect(bx,by,tw,22*s));ctx.fill();ctx.stroke();ctx.fillStyle="#fff";ctx.fillText(txt,bx+7*s,by+15.5*s);ctx.restore()}}
  })};
 /* shared animation clock: redraw viewers that pulse while visible */
 var live=[];
@@ -606,7 +698,7 @@ function drawProfile(){var cv=ui.prof,c=V.c;if(!c)return;var w=cv.clientWidth*(w
  var ctx=cv.getContext("2d"),W=cv.width,H=cv.height,n=c.n_tiles,mx=Math.max.apply(null,c.area_mm2.gland)||1,bw=W/n;ctx.clearRect(0,0,W,H);
  for(var i=0;i<n;i++){var h=Math.max(2,(c.area_mm2.gland[i]/mx)*(H-6)),x=i*bw;ctx.fillStyle=i===V.i?"#FF4DA6":"rgba(246,241,230,.28)";ctx.fillRect(x+1,H-h,bw-2,h);
   if(st.analyzed&&c.area_mm2.lesion[i]>0){ctx.fillStyle="#FF4D5E";ctx.beginPath();ctx.arc(x+bw/2,5,3.2*(window.devicePixelRatio||1),0,6.283);ctx.fill()}}}
-function setHud(){var c=V.c;ui.hTl.textContent="Axial · "+SEQN[V.seq];ui.scale.style.width=(10/c.fov_mm*100)+"%"}
+function setHud(){var c=V.c;ui.hTl.textContent="Axial, "+SEQN[V.seq];ui.scale.style.width=(10/c.fov_mm*100)+"%"}
 function setupSlider(){var c=V.c;ui.slider.max=c.n_tiles-1;var ls=lesionSlice(c);ui.toLesion.hidden=!(st.analyzed&&ls>=0&&c.has_cspca)}
 function layerList(c){return[["gland",1],["pz",1],["tz",1],["lesion",c.has_cspca&&c.lesions.length>0?1:0],["ref",1]]}
 
@@ -620,7 +712,7 @@ function setSeqBtn(seq){Array.prototype.forEach.call(document.querySelectorAll("
 Array.prototype.forEach.call(document.querySelectorAll(".tabs button"),function(b){b.addEventListener("click",function(){setSeqBtn(b.dataset.seq);V.setSeq(b.dataset.seq).then(setHud)})});
 
 function buildSteps(c){var T=META.runtimes_s;return[
- {t:"Leyendo el estudio y detectando secuencias",d:"T2W · ADC · alto-b",ms:900},
+ {t:"Leyendo el estudio y detectando secuencias",d:"T2W, ADC y alto-b",ms:900},
  {t:"Verificando los modelos",d:"huella SHA-256 registrada en la auditoría",ms:700},
  {t:"Segmentando la glándula",d:"prototipo: "+mmss(T.gland),ms:1500,layers:["gland"]},
  {t:"Segmentando zonas periférica y de transición",d:"prototipo: "+mmss(T.zones),ms:1500,layers:["pz","tz"]},
@@ -652,7 +744,7 @@ function showResults(c){ui.results.classList.add("on");ui.layers.classList.remov
  Array.prototype.forEach.call(ui.metrics.querySelectorAll("b"),function(b){var v=parseFloat(b.dataset.v);tween(reduce?1:900,function(k){b.innerHTML=fmt(v*k,1)+"<small>mL</small>"})});
  if(!c.has_cspca){ui.finding.innerHTML='<div class="finding none">La detección de focos no se ejecutó en este estudio del demo; la anotación experta se muestra solo como referencia.</div>'}
  else if(!c.lesions.length){ui.finding.innerHTML='<div class="finding none">El modelo no marcó focos sospechosos en este estudio.</div>'}
- else{var l=c.lesions[0],zone=l.zone?ZN[l.zone]:"zona no determinada";ui.finding.innerHTML='<div class="finding"><b>'+c.lesions.length+" foco sospechoso</b> · "+fmt(l.ml,2)+" mL · diámetro máximo "+fmt(l.diam_mm,1)+" mm · "+zone+" · "+l.slices+" cortes</div>"}
+ else{var l=c.lesions[0],zone=l.zone?ZN[l.zone]:"zona no determinada";ui.finding.innerHTML='<div class="finding"><b>'+c.lesions.length+" foco sospechoso</b> de "+fmt(l.ml,2)+" mL, diámetro máximo "+fmt(l.diam_mm,1)+" mm, en "+zone+", en "+l.slices+" cortes</div>"}
  renderCmp(c);drawProfile()}
 function renderCmp(c){if(!V.vis.ref){ui.cmp.innerHTML="";return}var k=c.compare,r=c.ref_lesions[0],txt;
  if(!k){txt="Anotación experta: "+c.ref_lesions.length+" lesión de "+fmt(r.ml,2)+" mL (referencia; en este caso no se ejecutó el modelo de focos).";}
@@ -686,6 +778,19 @@ else{Array.prototype.forEach.call(document.querySelectorAll(".reveal"),function(
 function countUp(el){var v=+el.dataset.count,d=+el.dataset.dec||0;if(reduce){el.textContent=fmt(v,d);return}tween(1400,function(k){el.textContent=fmt(v*k,d)})}
 (function(){var m=$("#mailto");if(m&&m.dataset.u){m.href="mailto:"+m.dataset.u+"@"+m.dataset.d+"?"+m.dataset.q.replace(/&amp;/g,"&")}})();
 requestAnimationFrame(loop);
+})();
+</script>
+
+<script>
+(function(){
+ var h=document.querySelector(".nav2");
+ if(!h)return;
+ var last=0;
+ addEventListener("scroll",function(){
+   var y=scrollY||pageYOffset;
+   h.style.boxShadow = y>8 ? "0 1px 0 rgba(255,255,255,.08)" : "none";
+   last=y;
+ },{passive:true});
 })();
 </script>
 </body>
