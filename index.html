@@ -376,7 +376,7 @@ footer{background:#000;border-top:1px solid rgba(255,255,255,.08)}
     <h1>Delimita la próstata.<span>Ubica lo sospechoso.</span></h1>
     <p class="lead2">Contornos de la glándula, de sus zonas y de los focos candidatos sobre el estudio del propio servicio. El radiólogo revisa, corrige y decide.</p>
     <div class="row">
-      <a class="btn2 solid" href="#demo">Probar el demo</a>
+      <a class="btn2 solid" id="ctaDemo" href="#demo">Probar el demo</a>
       <a class="btn2 plain" href="#revision">Ver cómo funciona &rsaquo;</a>
     </div>
     <figure class="hero3d">
@@ -666,22 +666,6 @@ var live=[];
 function loop(t){for(var i=0;i<live.length;i++){var v=live[i];if(v.visible){if(v.auto)v.auto(t);else if(v.pulse)v.draw(t)}}requestAnimationFrame(loop)}
 function watch(v,el){v.visible=false;live.push(v);if(window.IntersectionObserver){new IntersectionObserver(function(es){v.visible=es[0].isIntersecting},{threshold:.15}).observe(el)}else v.visible=true}
 
-/* ---------- Hero ---------- */
-var hero=new Viewer($("#heroC"));
-var heroOrder=[];
-hero.setCase("10013","t2w").then(function(){
- var c=hero.c;for(var i=0;i<c.n_tiles;i++){if(c.area_mm2.gland[i]>0)heroOrder.push(i)}
- ["gland","pz","tz","lesion"].forEach(function(L){hero.vis[L]=1});hero.pulse=true;
- var les=c.area_mm2.lesion,best=-1,bv=0;les.forEach(function(v,i){if(v>bv){bv=v;best=i}});
- if(reduce){hero.i=best>=0?best:heroOrder[Math.floor(heroOrder.length/2)];hero.draw(0);$("#heroTr").textContent="Corte "+c.z_index[hero.i]+"/"+c.n_total;return}
- var STEP=620,lastIdx=-1;
- hero.auto=function(t){var idx=Math.floor(t/STEP)%heroOrder.length,ph=(t%STEP)/STEP;hero.i=heroOrder[idx];
-  ["gland","pz","tz","lesion"].forEach(function(L){hero.rev[L]=Math.min(1,ph/.55)});
-  if(idx!==lastIdx){lastIdx=idx;$("#heroTr").textContent="Corte "+c.z_index[hero.i]+"/"+c.n_total;
-   var g=c.area_mm2.gland[hero.i];$("#heroLabel").textContent=g>0?"Glándula "+fmt(g,0)+" mm² en este corte":""}
-  hero.draw(t)};
- watch(hero,$("#heroV"))});
-
 /* ---------- Demo ---------- */
 var V=new Viewer($("#cv"),{onSlice:onSlice});V.pulse=true;
 var st={id:"10013",analyzed:false,running:false,playing:false,timer:null};
@@ -769,7 +753,7 @@ $("#ctaDemo").addEventListener("click",function(){setTimeout(function(){if(!st.a
 buildCases();selectCase("10013").then(function(){watch(V,$("#vwr"))});
 
 /* ---------- misc: counters, reveal, tl, times ---------- */
-$("#t1").textContent=mmss(META.runtimes_s.gland);$("#t2").textContent=mmss(META.runtimes_s.zones);$("#t3").textContent=mmss(META.runtimes_s.cspca);
+["t1:gland","t2:zones","t3:cspca"].forEach(function(p){var q=p.split(":"),e=$("#"+q[0]);if(e)e.textContent=mmss(META.runtimes_s[q[1]])});
 if("IntersectionObserver" in window){var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add("in");
   if(e.target.id==="tl")e.target.style.setProperty("--prog","30%");
   Array.prototype.forEach.call(e.target.querySelectorAll("[data-count]"),countUp);io.unobserve(e.target)}})},{threshold:.18});
