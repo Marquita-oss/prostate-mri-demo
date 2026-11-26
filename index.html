@@ -219,7 +219,9 @@ details p{font-size:15.5px;color:var(--muted)}
 .cta-band:after{content:"";position:absolute;right:20px;top:20px;width:160px;height:160px;border-radius:50%;border:2px solid rgba(255,255,255,.14)}
 .cta-band h2{margin-bottom:14px}.cta-band p{color:#B8C4BA}
 .people{display:grid;gap:12px;position:relative;z-index:1}
-.person{padding:14px 16px;border:1px solid rgba(246,241,230,.18);border-radius:14px;font-size:15px}
+.person{display:flex;gap:14px;align-items:center;padding:14px 16px;border:1px solid rgba(246,241,230,.18);border-radius:14px;font-size:15px}
+.person img{width:68px;height:68px;border-radius:50%;object-fit:cover;flex:none;background:#222}
+.person div{min-width:0}
 .person b{display:block;font:700 18px var(--f-display)}
 .person span{color:#B8C4BA}
 @media(max-width:860px){.cta-band{grid-template-columns:1fr}}
@@ -296,13 +298,18 @@ a{color:var(--blue-soft)}
 .chap .note2{color:var(--mut2);font-size:13.5px;margin-top:18px;max-width:46ch;line-height:1.5}
 @media(max-width:900px){.chap .grid{grid-template-columns:1fr;gap:34px}.chap.flip .grid{direction:ltr}}
 
-/* ventana de captura (plana, de frente, legible) */
-.dev{position:relative;border-radius:12px;background:#000;box-shadow:0 24px 60px rgba(0,0,0,.55),0 0 0 1px rgba(255,255,255,.12);overflow:hidden}
-.dev a{display:block;cursor:zoom-in}
-.dev .screen img{display:block;width:100%;height:auto}
-.dev .bar{height:26px;background:#1c1c20;display:flex;align-items:center;gap:6px;padding:0 12px;border-bottom:1px solid rgba(255,255,255,.08)}
-.dev .bar i{width:9px;height:9px;border-radius:50%;background:#3a3a40;display:block}
-.dev .bar span{margin-left:8px;font-size:11.5px;color:#8a8a92;letter-spacing:.02em}
+/* notebook frontal: bisel, muesca y base de aluminio; escala con su contenedor */
+.nb{margin:0;container-type:inline-size}
+.nb-scene,.nb-rig{position:static;display:block}
+.nb-lid{position:relative;width:88%;margin:0 auto;box-sizing:border-box;padding:1.1cqw 1.1cqw 1.3cqw;background:#0b0b0d;
+  border-radius:2.2cqw 2.2cqw 0 0;box-shadow:0 0 0 1.5px #44444b,0 0 0 3px #1a1a1d,0 4cqw 9cqw rgba(0,0,0,.6)}
+.nb-lid::before{content:"";position:absolute;left:50%;top:.35cqw;width:6cqw;height:.7cqw;transform:translateX(-50%);border-radius:0 0 .8cqw .8cqw;background:#050506}
+.nb-screen{width:100%;aspect-ratio:16/10;background:#000;border-radius:.5cqw;overflow:hidden;position:relative}
+.nb-screen a{display:block;width:100%;height:100%;cursor:zoom-in}
+.nb-screen img{display:block;width:100%;height:100%;object-fit:contain;background:#000}
+.nb-deck{position:relative;width:100%;height:2.2cqw;margin-top:-.1cqw;border-radius:0 0 2.6cqw 2.6cqw;
+  background:linear-gradient(#d9d9de 0%,#a9a9b0 55%,#7d7d84 100%);box-shadow:0 2cqw 4cqw rgba(0,0,0,.55)}
+.nb-deck::after{content:"";position:absolute;left:50%;top:0;width:15%;height:.8cqw;transform:translateX(-50%);border-radius:0 0 1cqw 1cqw;background:linear-gradient(#8f8f96,#b9b9bf)}
 .cite{font-size:.72em;line-height:0}.cite a{color:var(--blue);text-decoration:none}.cite a:hover{text-decoration:underline}
 .refs-list{padding-left:18px}.refs-list li{margin:0 0 8px;overflow-wrap:anywhere}.refs-list a{color:inherit}
 @media(min-width:901px){.chap .grid{grid-template-columns:minmax(0,.8fr) minmax(0,1.45fr)}}
@@ -403,9 +410,7 @@ footer{background:#000;border-top:1px solid rgba(255,255,255,.08)}
         <p class="note2">Caso 10013 del conjunto público PI-CAI. Captura del programa en ejecución.</p>
       </div>
       <div class="reveal">
-        <figure class="dev" style="margin:0"><div class="bar"><i></i><i></i><i></i><span>MedVisual</span></div>
-          <div class="screen"><a href="assets/shots/contornos.jpg" target="_blank" rel="noopener" aria-label="Abrir la captura a tamaño completo"><img src="assets/shots/contornos.jpg" alt="Ventana del programa con los contornos sobre una imagen T2W" loading="lazy" width="1600" height="1000"></a></div>
-        </figure>
+        <figure class="nb"><div class="nb-scene"><div class="nb-rig"><div class="nb-lid"><div class="nb-screen"><a href="assets/shots/contornos.jpg" target="_blank" rel="noopener" aria-label="Abrir la captura a tamaño completo"><img src="assets/shots/contornos.jpg" alt="Ventana del programa con los contornos sobre una imagen T2W" loading="lazy" width="1600" height="1000"></a></div></div><div class="nb-deck"></div></div></div></figure>
       </div>
     </div>
   </div>
@@ -421,9 +426,7 @@ footer{background:#000;border-top:1px solid rgba(255,255,255,.08)}
         <p class="note2">El rótulo naranja de cada panel indica que el contorno viene remuestreado desde T2W.</p>
       </div>
       <div class="reveal">
-        <figure class="dev" style="margin:0"><div class="bar"><i></i><i></i><i></i><span>MedVisual</span></div>
-          <div class="screen"><a href="assets/shots/multiparametrico.jpg" target="_blank" rel="noopener" aria-label="Abrir la captura a tamaño completo"><img src="assets/shots/multiparametrico.jpg" alt="Vista de cuatro paneles con T2W, ADC, alto-b y sagital" loading="lazy" width="1600" height="1000"></a></div>
-        </figure>
+        <figure class="nb"><div class="nb-scene"><div class="nb-rig"><div class="nb-lid"><div class="nb-screen"><a href="assets/shots/multiparametrico.jpg" target="_blank" rel="noopener" aria-label="Abrir la captura a tamaño completo"><img src="assets/shots/multiparametrico.jpg" alt="Vista de cuatro paneles con T2W, ADC, alto-b y sagital" loading="lazy" width="1600" height="1000"></a></div></div><div class="nb-deck"></div></div></div></figure>
       </div>
     </div>
   </div>
@@ -439,9 +442,7 @@ footer{background:#000;border-top:1px solid rgba(255,255,255,.08)}
         <p class="note2">Ventana de próstata por defecto. La escala y la leyenda las dibuja el programa.</p>
       </div>
       <div class="reveal">
-        <figure class="dev" style="margin:0"><div class="bar"><i></i><i></i><i></i><span>MedVisual</span></div>
-          <div class="screen"><a href="assets/shots/fusion.jpg" target="_blank" rel="noopener" aria-label="Abrir la captura a tamaño completo"><img src="assets/shots/fusion.jpg" alt="Imagen T2W con el mapa ADC superpuesto y su barra de color" loading="lazy" width="1600" height="1000"></a></div>
-        </figure>
+        <figure class="nb"><div class="nb-scene"><div class="nb-rig"><div class="nb-lid"><div class="nb-screen"><a href="assets/shots/fusion.jpg" target="_blank" rel="noopener" aria-label="Abrir la captura a tamaño completo"><img src="assets/shots/fusion.jpg" alt="Imagen T2W con el mapa ADC superpuesto y su barra de color" loading="lazy" width="1600" height="1000"></a></div></div><div class="nb-deck"></div></div></div></figure>
       </div>
     </div>
   </div>
@@ -457,9 +458,7 @@ footer{background:#000;border-top:1px solid rgba(255,255,255,.08)}
         <p class="note2">El análisis se ejecuta solo al cargar el estudio.</p>
       </div>
       <div class="reveal">
-        <figure class="dev" style="margin:0"><div class="bar"><i></i><i></i><i></i><span>MedVisual</span></div>
-          <div class="screen"><a href="assets/shots/medicion.jpg" target="_blank" rel="noopener" aria-label="Abrir la captura a tamaño completo"><img src="assets/shots/medicion.jpg" alt="Panel de análisis cuantitativo con tabla de métricas y botones de exportación" loading="lazy" width="1600" height="1000"></a></div>
-        </figure>
+        <figure class="nb"><div class="nb-scene"><div class="nb-rig"><div class="nb-lid"><div class="nb-screen"><a href="assets/shots/medicion.jpg" target="_blank" rel="noopener" aria-label="Abrir la captura a tamaño completo"><img src="assets/shots/medicion.jpg" alt="Panel de análisis cuantitativo con tabla de métricas y botones de exportación" loading="lazy" width="1600" height="1000"></a></div></div><div class="nb-deck"></div></div></div></figure>
       </div>
     </div>
   </div>
@@ -475,9 +474,7 @@ footer{background:#000;border-top:1px solid rgba(255,255,255,.08)}
         
       </div>
       <div class="reveal">
-        <figure class="dev" style="margin:0"><div class="bar"><i></i><i></i><i></i><span>MedVisual</span></div>
-          <div class="screen"><a href="assets/shots/modelos.jpg" target="_blank" rel="noopener" aria-label="Abrir la captura a tamaño completo"><img src="assets/shots/modelos.jpg" alt="Panel de análisis con los tres modelos y el aviso de modelos no certificados" loading="lazy" width="1600" height="1000"></a></div>
-        </figure>
+        <figure class="nb"><div class="nb-scene"><div class="nb-rig"><div class="nb-lid"><div class="nb-screen"><a href="assets/shots/modelos.jpg" target="_blank" rel="noopener" aria-label="Abrir la captura a tamaño completo"><img src="assets/shots/modelos.jpg" alt="Panel de análisis con los tres modelos y el aviso de modelos no certificados" loading="lazy" width="1600" height="1000"></a></div></div><div class="nb-deck"></div></div></div></figure>
       </div>
     </div>
   </div>
@@ -543,7 +540,7 @@ footer{background:#000;border-top:1px solid rgba(255,255,255,.08)}
       <p class="lead">Cada cifra con las condiciones en que se midió.</p>
     </div>
     <div class="nums reveal">
-      <div><b>0,90</b><span>Dice en segmentación de glándula de la plataforma base.</span></div>
+      <div><b>0,60–0,92</b><span>Dice en las tres tareas de segmentación (glándula, zonas y cáncer clínicamente significativo) de la plataforma base<sup class="cite"><a href="#r1">[1]</a></sup>.</span></div>
       <div><b>108</b><span>Pruebas de mutación superadas en los módulos de modelos, exportación DICOM, trazabilidad y falla visible.</span></div>
       <div><b>≤0,001 mm</b><span>Error de geometría al exportar máscaras, corregido desde errores de 21 a 362 mm detectados en la verificación.</span></div>
     </div>
@@ -580,8 +577,9 @@ footer{background:#000;border-top:1px solid rgba(255,255,255,.08)}
         </div>
       </div>
       <div class="people">
-        <div class="person"><b>Ronald Marca</b><span>Director del proyecto. Magíster en Ciencias de la Ingeniería, mención Ingeniería Biomédica, Universidad de Valparaíso</span></div>
-        <div class="person"><b>Dr. Rodrigo Salas Fuentes</b><span>Profesor guía. Facultad de Ingeniería, Universidad de Valparaíso</span></div>
+        <div class="person"><img src="assets/people/marca.jpg" alt="Ronald Marca" width="240" height="240" loading="lazy"><div><b>Ronald Marca</b><span>Director del proyecto. Doctorado en Ciencias e Ingeniería para la Salud, Universidad de Valparaíso</span></div></div>
+        <div class="person"><img src="assets/people/salas.jpg" alt="Rodrigo Salas" width="240" height="240" loading="lazy"><div><b>Dr. Rodrigo Salas</b><span>Profesor guía. Escuela de Ingeniería Biomédica, Universidad de Valparaíso</span></div></div>
+        <div class="person"><img src="assets/people/besa.jpg" alt="Cecilia Besa" width="240" height="240" loading="lazy"><div><b>Dra. Cecilia Besa</b><span>Departamento de Radiología, Pontificia Universidad Católica de Chile</span></div></div>
       </div>
     </div>
   </div>
@@ -604,7 +602,7 @@ footer{background:#000;border-top:1px solid rgba(255,255,255,.08)}
       <div>
         <h4>Referencias</h4>
         <ol class="refs-list">
-          <li id="r1">Marca R, Salas R, Ponce S, Caprile P, Besa C. DeepProstate: AI-powered prostate MRI analysis platform [software]. Versión 1.4.3. 2025. <a href="https://github.com/Marquita-oss/DeepProstate">github.com/Marquita-oss/DeepProstate</a></li>
+          <li id="r1">Marca R, Salas R, Ponce S, Caprile P, Besa C. DeepProstate: integrated deep learning and interactive visualization for clinically significant prostate cancer segmentation. En: <i>2025 15th IEEE International Conference on Pattern Recognition Systems (ICPRS)</i>; 1–4 dic 2025; Valparaíso–Viña del Mar, Chile. <a href="https://doi.org/10.1109/ICPRS66293.2025.11302847">doi:10.1109/ICPRS66293.2025.11302847</a>. Código: <a href="https://github.com/Marquita-oss/DeepProstate">github.com/Marquita-oss/DeepProstate</a></li>
           <li id="r2">Isensee F, Jaeger PF, Kohl SAA, Petersen J, Maier-Hein KH. nnU-Net: a self-configuring method for deep learning-based biomedical image segmentation. <i>Nat Methods.</i> 2021;18(2):203–211. <a href="https://doi.org/10.1038/s41592-020-01008-z">doi:10.1038/s41592-020-01008-z</a></li>
           <li id="r3">Saha A, Bosma JS, Twilt JJ, et al. Artificial intelligence and radiologists in prostate cancer detection on MRI (PI-CAI). <i>Lancet Oncol.</i> 2024;25(7):879–887. <a href="https://doi.org/10.1016/S1470-2045(24)00220-1">doi:10.1016/S1470-2045(24)00220-1</a>. Datos: PI-CAI Public Training and Development Dataset, <a href="https://doi.org/10.5281/zenodo.6624726">doi:10.5281/zenodo.6624726</a>.</li>
           <li id="r4">Turkbey B, Rosenkrantz AB, Haider MA, et al. Prostate Imaging Reporting and Data System Version 2.1: 2019 update of Prostate Imaging Reporting and Data System Version 2. <i>Eur Urol.</i> 2019;76(3):340–351.</li>
