@@ -1,7 +1,7 @@
 # MedVisual (prostate-mri-demo)
 
-Vista previa publica de MedVisual, plataforma de analisis de resonancia de prostata con IA
-(construida sobre DeepProstate), Universidad de Valparaiso. Sitio estatico: capturas del programa, animacion 3D de las mascaras
+Vista previa publica de MedVisual, plataforma de imagen medica con IA pensada para distintos tipos
+de imagen y, por ahora, desarrollada sobre todo en resonancia de prostata (sobre DeepProstate), Universidad de Valparaiso. Sitio estatico: capturas del programa, animacion 3D de las mascaras
 y un demo interactivo con resultados precalculados sobre estudios publicos PI-CAI.
 
 **Ver la pagina:** https://marquita-oss.github.io/prostate-mri-demo/

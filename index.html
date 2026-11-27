@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>MedVisual — Análisis de resonancia de próstata con IA</title>
-<meta name="description" content="MedVisual segmenta la próstata, marca focos sospechosos y entrega métricas reproducibles desde estudios DICOM. Prototipo funcional en desarrollo, Universidad de Valparaíso. Pruébalo en el demo.">
+<title>MedVisual — Imagen médica con IA, hoy con foco en próstata</title>
+<meta name="description" content="MedVisual es una plataforma pensada para distintos tipos de imagen médica. Hoy la hemos desarrollado sobre todo en resonancia de próstata: segmenta la glándula, marca focos sospechosos y entrega métricas reproducibles desde estudios DICOM. Pruébalo en el demo.">
 <meta name="theme-color" content="#000000">
 <meta name="robots" content="noindex, nofollow">
 <meta property="og:type" content="website">
-<meta property="og:title" content="MedVisual — Resonancia de próstata, analizada con claridad">
+<meta property="og:title" content="MedVisual — Imagen médica, analizada con claridad">
 <meta property="og:description" content="Demo interactivo con resultados reales: glándula, zonas y focos sospechosos sobre resonancia biparamétrica. Universidad de Valparaíso.">
 <meta property="og:image" content="https://marquita-oss.github.io/prostate-mri-demo/assets/og.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -284,6 +284,7 @@ a{color:var(--blue-soft)}
 .btn2.solid{background:var(--blue);color:#fff}
 .btn2.solid:hover{background:#5d9ce8;color:#fff}
 .btn2.plain{color:var(--blue-soft);padding-left:10px}
+.hero2 .scope2{max-width:600px;margin:16px auto 0;color:var(--mut2);font-size:14.5px;line-height:1.5}
 .hero2 .row{display:flex;gap:10px;justify-content:center;align-items:center;margin-top:30px;flex-wrap:wrap}
 .hero3d{position:relative;z-index:1;margin:34px auto 0;width:min(440px,78vw)}
 .hero3d img{width:100%;display:block;-webkit-mask-image:radial-gradient(closest-side,#000 62%,transparent 100%);mask-image:radial-gradient(closest-side,#000 62%,transparent 100%);filter:drop-shadow(0 30px 70px rgba(74,144,226,.22))}
@@ -386,9 +387,10 @@ footer{background:#000;border-top:1px solid rgba(255,255,255,.08)}
 <main>
 <section class="hero2" id="top">
   <div class="wrap in">
-    <p class="eyebrow2">Resonancia multiparamétrica de próstata</p>
+    <p class="eyebrow2">Imagen médica con IA · hoy, resonancia de próstata</p>
     <h1>Delimita la próstata.<span>Ubica lo sospechoso.</span></h1>
     <p class="lead2">Contornos de la glándula, de sus zonas y de los focos candidatos sobre el estudio del propio servicio. El radiólogo revisa, corrige y decide.</p>
+    <p class="scope2">MedVisual está pensado para distintos tipos de imagen médica. Por ahora lo hemos explorado sobre todo en próstata, que es lo que muestra esta página.</p>
     <div class="row">
       <a class="btn2 solid" id="ctaDemo" href="#demo">Probar el demo</a>
       <a class="btn2 plain" href="#revision">Ver cómo funciona &rsaquo;</a>
@@ -561,7 +563,7 @@ footer{background:#000;border-top:1px solid rgba(255,255,255,.08)}
     <div class="sec-head reveal">
       <p class="eyebrow">Estado del proyecto</p>
       <h2>Un prototipo funcional, en desarrollo.</h2>
-      <p class="lead">MedVisual se construye sobre DeepProstate<sup class="cite"><a href="#r1">[1]</a></sup>, una plataforma de código abierto desarrollada en la Universidad de Valparaíso. Hoy funciona de extremo a extremo; falta probarlo en un centro real.</p>
+      <p class="lead">MedVisual está pensado para distintos tipos de imagen médica; hoy su desarrollo más profundo es en resonancia de próstata, sobre DeepProstate<sup class="cite"><a href="#r1">[1]</a></sup>, una plataforma de código abierto desarrollada en la Universidad de Valparaíso. Funciona de extremo a extremo; falta probarlo en un centro real.</p>
     </div>
     <div class="road reveal">
       <div><p class="when">Hoy</p><h4>Prototipo funcional</h4><p>Modelos ejecutados de extremo a extremo sobre estudios públicos, con registro de cada corrida y exportación auditable.</p></div>
@@ -598,7 +600,7 @@ footer{background:#000;border-top:1px solid rgba(255,255,255,.08)}
       <div>
         <h4>Aviso importante</h4>
         <p>MedVisual es un <b style="color:#fff">prototipo funcional en desarrollo</b>. No es un dispositivo médico certificado y no debe usarse para diagnóstico ni para decisiones clínicas. Los resultados del demo son ilustrativos.</p>
-        <p style="margin-top:14px"><b style="color:#fff">MedVisual</b> — análisis de resonancia de próstata con IA<br>Universidad de Valparaíso, iHEALTH, Proyecto VIU 2026</p>
+        <p style="margin-top:14px"><b style="color:#fff">MedVisual</b> — plataforma de imagen médica con IA, hoy con foco en próstata<br>Universidad de Valparaíso, iHEALTH, Proyecto VIU 2026</p>
       </div>
       <div>
         <h4>Datos del demo</h4>
