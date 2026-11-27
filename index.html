@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>MedVisual — Imagen médica con IA, hoy con foco en próstata</title>
+<title>MedVisual: imagen médica, hoy con foco en próstata</title>
 <meta name="description" content="MedVisual es una plataforma pensada para distintos tipos de imagen médica. Hoy la hemos desarrollado sobre todo en resonancia de próstata: segmenta la glándula, marca focos sospechosos y entrega métricas reproducibles desde estudios DICOM. Pruébalo en el demo.">
 <meta name="theme-color" content="#000000">
 <meta name="robots" content="noindex, nofollow">
 <meta property="og:type" content="website">
-<meta property="og:title" content="MedVisual — Imagen médica, analizada con claridad">
+<meta property="og:title" content="MedVisual: imagen médica, analizada con claridad">
 <meta property="og:description" content="Demo interactivo con resultados reales: glándula, zonas y focos sospechosos sobre resonancia biparamétrica. Universidad de Valparaíso.">
 <meta property="og:image" content="https://marquita-oss.github.io/prostate-mri-demo/assets/og.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -387,13 +387,13 @@ footer{background:#000;border-top:1px solid rgba(255,255,255,.08)}
 <main>
 <section class="hero2" id="top">
   <div class="wrap in">
-    <p class="eyebrow2">Imagen médica con IA · hoy, resonancia de próstata</p>
+    <p class="eyebrow2">Imagen médica, hoy en resonancia de próstata</p>
     <h1>Delimita la próstata.<span>Ubica lo sospechoso.</span></h1>
     <p class="lead2">Contornos de la glándula, de sus zonas y de los focos candidatos sobre el estudio del propio servicio. El radiólogo revisa, corrige y decide.</p>
     <p class="scope2">MedVisual está pensado para distintos tipos de imagen médica. Por ahora lo hemos explorado sobre todo en próstata, que es lo que muestra esta página.</p>
     <div class="row">
       <a class="btn2 solid" id="ctaDemo" href="#demo">Probar el demo</a>
-      <a class="btn2 plain" href="#revision">Ver cómo funciona &rsaquo;</a>
+      <a class="btn2 plain" href="#revision">Ver cómo funciona</a>
     </div>
     <figure class="hero3d">
       <img src="assets/shots/prostate3d.webp" alt="Reconstrucción tridimensional de la glándula con el foco sospechoso en su interior, girando" width="660" height="660">
@@ -535,7 +535,7 @@ footer{background:#000;border-top:1px solid rgba(255,255,255,.08)}
         </div>
       </div>
     </div>
-    <p class="disc"><b>Qué estás viendo.</b> Resultados precalculados por los modelos nnU-Net del proyecto sobre estudios del conjunto público PI-CAI<sup class="cite"><a href="#r3">[3]</a></sup>. Esos estudios forman parte de los datos con que se entrenaron los modelos, así que el demo ilustra el flujo y <b>no estima desempeño</b>. Prototipo de investigación sin certificar: no usar para decisiones clínicas.</p>
+    <p class="disc">Los resultados de este demo ya estaban calculados con nuestros modelos nnU-Net<sup class="cite"><a href="#r2">[2]</a></sup> sobre estudios públicos de PI-CAI<sup class="cite"><a href="#r3">[3]</a></sup>. Esos mismos estudios se usaron para entrenar los modelos, así que el demo muestra cómo trabaja el programa, no qué tan bien funciona. No sirve para decisiones clínicas.</p>
   </div>
 </section>
 
@@ -544,13 +544,13 @@ footer{background:#000;border-top:1px solid rgba(255,255,255,.08)}
   <div class="wrap">
     <div class="sec-head reveal">
       <p class="eyebrow">Evidencia y límites</p>
-      <h2>Lo que está medido, y lo que todavía no.</h2>
+      <h2>Qué hemos medido y qué falta.</h2>
       <p class="lead">Cada cifra con las condiciones en que se midió.</p>
     </div>
     <div class="nums reveal">
       <div><b>0,60–0,92</b><span>Dice en las tres tareas de segmentación (glándula, zonas y cáncer clínicamente significativo) de la plataforma base<sup class="cite"><a href="#r1">[1]</a></sup>.</span></div>
       <div><b>108</b><span>Pruebas de mutación superadas en los módulos de modelos, exportación DICOM, trazabilidad y falla visible.</span></div>
-      <div><b>≤0,001 mm</b><span>Error de geometría al exportar máscaras, corregido desde errores de 21 a 362 mm detectados en la verificación.</span></div>
+      <div><b>0,001 mm</b><span>Error máximo de geometría al exportar las máscaras. Antes de corregirlo, la verificación había detectado errores de 21 a 362 mm.</span></div>
     </div>
     <ul class="limits reveal">
       <li>En un notebook de 8 GB sin tarjeta gráfica, el estudio completo tardó 33 min 29 s: 4 min 47 s la glándula, 4 min 58 s las zonas y 23 min 44 s la detección con sus tres pliegues.</li>
@@ -600,7 +600,7 @@ footer{background:#000;border-top:1px solid rgba(255,255,255,.08)}
       <div>
         <h4>Aviso importante</h4>
         <p>MedVisual es un <b style="color:#fff">prototipo funcional en desarrollo</b>. No es un dispositivo médico certificado y no debe usarse para diagnóstico ni para decisiones clínicas. Los resultados del demo son ilustrativos.</p>
-        <p style="margin-top:14px"><b style="color:#fff">MedVisual</b> — plataforma de imagen médica con IA, hoy con foco en próstata<br>Universidad de Valparaíso, iHEALTH, Proyecto VIU 2026</p>
+        <p style="margin-top:14px"><b style="color:#fff">MedVisual</b>, plataforma de imagen médica, hoy con foco en próstata.<br>Universidad de Valparaíso, iHEALTH, Proyecto VIU 2026</p>
       </div>
       <div>
         <h4>Datos del demo</h4>
